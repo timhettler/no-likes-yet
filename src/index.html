@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <!-- build:process -->
+    <title><%= title %></title>
+    <meta name="description" content="<%= description %>" />
+    <meta name="viewport" content="<%= viewport %>" />
+    <!-- /build -->
+
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+    <!-- compile:style app -->
+        <!-- build:style app --><!-- /build -->
+    <!-- /compile -->
+    <!-- compile:script modernizr -->
+        <!-- build:script modernizr --><!-- /build -->
+    <!-- /compile -->
+</head>
+<body ng-app="app" ng-controller="AuthCtrl">
+    <ng-view></ng-view>
+    <!-- compile:script app -->
+    <!-- build:script optional jquery --><!-- /build -->
+    <!-- build:script optional angular --><!-- /build -->
+    <!-- build:script optional components --><!-- /build -->
+    <!-- build:script app --><!-- /build -->
+    <!-- /compile -->
+</body>
+</html>
