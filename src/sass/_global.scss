@@ -1,0 +1,12 @@
+$color--almost-black: #121212;
+$color--gray: #979797;
+
+$base-font-size: 18px;
+$base-font-family: 'Myriad Pro', 'Helvetica Neue', Helvetica, sans-serif;
+
+@mixin ellipsis() {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width: 100%;
+}

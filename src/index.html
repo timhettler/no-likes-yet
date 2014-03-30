@@ -16,8 +16,17 @@
         <!-- build:script modernizr --><!-- /build -->
     <!-- /compile -->
 </head>
-<body ng-app="app" ng-controller="AuthCtrl">
-    <ng-view></ng-view>
+<body ng-app="app">
+    <header>
+        <h1 class="logo">No Likes Yet</h1>
+        <p class="tagline">All the photos on Instagram that could use some love.</p>
+    </header>
+    <div class="main">
+        <div class="main-container">
+            <search></search>
+            <ng-view></ng-view>
+        </div>
+    </div>
     <!-- compile:script app -->
     <!-- build:script optional jquery --><!-- /build -->
     <!-- build:script optional angular --><!-- /build -->

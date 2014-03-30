@@ -1,0 +1,27 @@
+.search {
+    background-image: image-url('search.png');
+    background-position: 0 0.2em;
+    background-repeat: no-repeat;
+    color: $color--gray;
+    padding-left: 25px;
+}
+
+.search__input {
+    border: none;
+    color: $color--gray;
+    font-size: 100%;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+
+    &::-webkit-input-placeholder,
+    &:-moz-placeholder,
+    &::-moz-placeholder,
+    &:-ms-input-placeholder {
+        color: $color--gray;
+    }
+
+    &:focus {
+        outline: none;
+    }
+}

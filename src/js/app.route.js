@@ -2,9 +2,9 @@ var app = angular.module('app');
 
 app.config(['$routeProvider', function($routeProvider) {
     $routeProvider
-        .when('/', {
-            templateUrl: 'partials/dashboard.html',
-            controller: 'DashboardCtrl'
+        .when('/user/:username', {
+            templateUrl: 'partials/media.html',
+            controller: 'MediaCtrl'
         })
         .otherwise({ redirectTo: '/' });
 }]);

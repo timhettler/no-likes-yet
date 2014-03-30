@@ -1,0 +1,43 @@
+.media-container {
+    text-align: justify;
+    margin: 45px 0;
+    font-size: 0.1px; /*hide whitespace between elements*/
+    position: relative;
+
+    &:after {
+        content: '';
+        display: inline-block;
+        width: 100%;
+    }
+}
+
+.media {
+    display: inline-block;
+    font-size: $base-font-size;
+    margin: {
+        bottom: 2.33%;
+    };
+    vertical-align: top;
+    width: 31%;
+}
+
+    .media__caption {
+        @include ellipsis();
+        color: #717171;
+        border-bottom: 1px solid #e6e6e6;
+        margin: 0.8em 0;
+        padding-bottom: 0.8em;
+        height: 1.2em;
+    }
+
+    .media__timestamp {
+        color: $color--gray;
+        font-size: 80%;
+
+        &:before {
+            content: image-url('time.png');
+            vertical-align: middle;
+            display: inline-block;
+            margin-right: 5px;
+        }
+    }
