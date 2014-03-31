@@ -31,7 +31,6 @@ var MediaCtrl = app.controller('MediaCtrl', function ($scope, $routeParams, inst
         } else {
             searchForUser($routeParams.username);
         }
-
     };
 
     init();

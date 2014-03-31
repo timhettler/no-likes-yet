@@ -1,8 +1,7 @@
 .media-container {
-    text-align: justify;
     margin: 45px 0;
-    font-size: 0.1px; /*hide whitespace between elements*/
     position: relative;
+    left: -2.33%;
 
     &:after {
         content: '';
@@ -13,8 +12,8 @@
 
 .media {
     display: inline-block;
-    font-size: $base-font-size;
     margin: {
+        left: 2.33%;
         bottom: 2.33%;
     };
     vertical-align: top;
