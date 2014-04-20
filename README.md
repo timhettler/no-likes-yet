@@ -2,8 +2,10 @@
 
 ## TODO
 
-* Get 1 page of follower results
-* Mobile view
+Get next page for user
+Return page object
+Set user.pagination & user.data
+
 
 
 ### Authentication

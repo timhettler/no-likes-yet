@@ -1,7 +1,7 @@
-var app = angular.module('app', ['ngRoute', 'ivpusic.cookie', 'templates-app']);
+var app = angular.module('app', ['ngRoute', 'ivpusic.cookie', 'templates-app', 'infinite-scroll']);
 
 app.constant('instagramApiData', {
-    clientId: '248c3275e45d465db7fe8f1e246cd60d',
+    clientId: 'ed254d50500045dd81f073465e10a777',
     grant_type: 'authorization_code',
-    redirectUri: 'http://timhettler.com/nly/'
+    redirectUri: 'http://localhost/freelance/no-likes-yet/build/'
 });

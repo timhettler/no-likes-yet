@@ -1,8 +1,4 @@
-<div class="media-container">
-    <div ng-repeat="item in media[user.id].data" class="media">
-        <a ng-href="{{item.link}}" target="_blank"><img ng-src="{{item.images.standard_resolution.url}}" alt=""></a>
-        <div class="media__caption" ng-bind="item.caption.text"></div>
-        <div class="media__timestamp"><moment-from time="item.created_time"></moment-from>&nbsp;by {{item.user.username}}</div>
-    </div>
-    <div ng-if="media[user.id].data.length > 0 && media[user.id].pagination"><button ng-click="getUserMedia(user)">Load more</button></div>
+<div class="media-container" infinite-scroll="doScroll()" infinite-scroll-distance="1" infinite-scroll-disabled="busy">
+    <media ng-repeat="item in followingMedia" data="item"></media>
+    <!-- <div ng-if="media[user.id].data.length > 0 && media[user.id].pagination"><button ng-click="getUserMedia(user)">Load more</button></div> -->
 </div>

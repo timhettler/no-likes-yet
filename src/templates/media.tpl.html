@@ -1,0 +1,5 @@
+<div class="media">
+    <a ng-href="{{data.link}}" target="_blank"><img ng-src="{{data.images.standard_resolution.url}}" alt=""></a>
+    <div class="media__caption" ng-bind="data.caption.text"></div>
+    <div class="media__timestamp"><moment-from time="data.created_time"></moment-from>&nbsp;by {{data.user.username}}</div>
+</div>
