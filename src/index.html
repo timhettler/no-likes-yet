@@ -21,9 +21,10 @@
         <h1 class="logo">No Likes Yet</h1>
         <p class="tagline">All the photos on Instagram that could use some love.</p>
     </header>
-    <div class="main">
+    <div class="main" ng-controller="MainCtrl">
         <div class="main-container">
-            <search></search>
+            <search ng-if="hasAccessToken"></search>
+            <a ng-if="!hasAccessToken" ng-href="https://instagram.com/oauth/authorize/?client_id={{clientId}}&amp;redirect_uri={{redirectUri}}&amp;response_type=token&amp;scope=basic+likes">Log In</a>
             <ng-view></ng-view>
         </div>
     </div>

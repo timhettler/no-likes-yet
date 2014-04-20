@@ -5,14 +5,18 @@ var app = angular.module('app');
 
 /* Services */
 
-app.factory('instagramService', function ($http, $q) {
+app.factory('instagramService', function ($http, $q, instagramApiData) {
     var publicMethods = {},
-        clientId = 'ed254d50500045dd81f073465e10a777',
+        clientId = instagramApiData.clientId,
+        accessToken = null,
         baseUrl = 'https://api.instagram.com/v1/',
-        users = {};
+        users = {},
+        media = {};
 
     var getData = function (url) {
         var deferred = $q.defer();
+
+        console.log('api request: ', url);
 
         $http.
             jsonp(url).
@@ -26,6 +30,33 @@ app.factory('instagramService', function ($http, $q) {
         return deferred.promise;
     };
 
+    var configureUrl = function (url, params) {
+        var query = [(accessToken) ? 'access_token='+accessToken : 'client_id=' + clientId, 'callback=JSON_CALLBACK'];
+
+        angular.forEach(params, function (value, key) {
+            if(value) { this.push(key + '=' + value); }
+        }, query);
+
+        return url + '?' + query.join('&');
+    };
+
+    publicMethods.getSelfData = function () {
+        var deferred = $q.defer(),
+            url = configureUrl('https://api.instagram.com/v1/users/self/');
+
+        getData(url)
+            .then(function (result) {
+                if(result.data) {
+                    setUserData(result.data);
+                    deferred.resolve(result.data);
+                } else {
+                    deferred.reject(result);
+                }
+            });
+
+        return deferred.promise;
+    };
+
     publicMethods.getUserData = function (username) {
         return users[username];
     };
@@ -35,54 +66,52 @@ app.factory('instagramService', function ($http, $q) {
         return users[userObj.username];
     };
 
-    publicMethods.getUserImages = function (uid) {
+    publicMethods.getUserMedia = function (uid, max_id) {
         var deferred = $q.defer(),
-            mediaUrl = baseUrl + 'users/' + uid + '/media/recent/?client_id=' + clientId + '&callback=JSON_CALLBACK',
-            images = [],
-            getImages = function (url) {
-                console.log('getting images at %s', url);
-                getData(url)
-                    .then(function (result) {
-                        images = images.concat(result.data);
+            mediaUrl = configureUrl(baseUrl + 'users/' + uid + '/media/recent/', {'max_id':max_id});
 
-                        if(result.pagination.next_max_id) {
-                            getImages(mediaUrl + '&max_id=' + result.pagination.next_max_id);
-                        } else {
-                            deferred.resolve(images);
-                        }
-                    });
-            };
-
-            getImages(mediaUrl);
+            getData(mediaUrl)
+                .then(function (result) {
+                    deferred.resolve(result);
+                });
 
         return deferred.promise;
     };
 
-    publicMethods.getNoLikes = function (uid) {
+    publicMethods.getUserFollowing = function (uid) {
         var deferred = $q.defer(),
-            lonelyMedia = [],
-            filterLikedMedia = function (media) {
-                media.forEach(function (item) {
-                    if (item.likes.count === 0) {
-                        lonelyMedia.push(item);
-                    }
-                });
-                deferred.resolve(lonelyMedia);
+            followingUrl = configureUrl(baseUrl + 'users/' + uid + '/follows/'),
+            following = [],
+            getFollowing = function (url) {
+                console.log('getting followers at %s', url);
+                getData(url)
+                    .then(function (result) {
+                        following = following.concat(result.data);
+
+                        result.data.forEach(function (user) { // Store user data incase we want to look them up later
+                            setUserData(user);
+                        });
+
+                        if(result.pagination.next_url) {
+                            getFollowing(configureUrl(baseUrl + 'users/' + uid + '/follows/', {cursor:result.pagination.next_cursor}));
+                        } else {
+                            deferred.resolve(following);
+                        }
+                    });
             };
 
-        publicMethods.getUserImages(uid)
-            .then(filterLikedMedia);
+            getFollowing(followingUrl);
 
         return deferred.promise;
     };
 
     publicMethods.searchForUser = function (username) {
         var deferred = $q.defer(),
-            url = 'https://api.instagram.com/v1/users/search/?q=' + username + '&client_id=' + clientId + '&callback=JSON_CALLBACK';
+            url = configureUrl('https://api.instagram.com/v1/users/search/',{q:username});
 
         getData(url)
             .then(function (users) {
-                if (users.data.length === 1) {
+                if (users.data.length !== 0) {
                     setUserData(users.data[0]);
                     deferred.resolve(users.data[0]);
                 } else {
@@ -93,8 +122,17 @@ app.factory('instagramService', function ($http, $q) {
         return deferred.promise;
     };
 
+    publicMethods.setAccessToken = function (token) {
+        console.log('access token set', token);
+        accessToken = token;
+    };
+
+    publicMethods.hasAccessToken = function () {
+        return accessToken !== null;
+    };
+
     return publicMethods;
-});
+    });
 
 
 })( window, document );
