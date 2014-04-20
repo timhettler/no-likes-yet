@@ -1,8 +1,9 @@
-$color--almost-black: #121212;
-$color--gray: #979797;
+$color--black: #000;
+$color--gray: #999;
+$color--light-gray: #e1e1e1;
+$color--orange: #f9651b;
 
-$base-font-size: 18px;
-$base-font-family: 'Myriad Pro', 'Helvetica Neue', Helvetica, sans-serif;
+$base-font-family: 'Proxima Nova', 'Helvetica Neue', Helvetica, sans-serif;
 
 @mixin ellipsis() {
     overflow: hidden;

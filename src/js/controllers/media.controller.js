@@ -136,6 +136,7 @@ var MediaCtrl = app.controller('MediaCtrl', function ($scope, $routeParams, ipCo
         } else {
             instagramService.getUserFollowing($scope.user.id)
                 .then(function (following) {
+                    fisherYates(following); //randmize
                     $scope.following = following;
                     $scope.following.forEach(function (user) {
                         $scope.media[user.id] = {
@@ -196,3 +197,15 @@ var MediaCtrl = app.controller('MediaCtrl', function ($scope, $routeParams, ipCo
 
     init();
 });
+
+function fisherYates ( myArray ) {
+  var i = myArray.length;
+  if ( i === 0 ) {return false;}
+  while ( --i ) {
+     var j = Math.floor( Math.random() * ( i + 1 ) );
+     var tempi = myArray[i];
+     var tempj = myArray[j];
+     myArray[i] = tempj;
+     myArray[j] = tempi;
+   }
+}

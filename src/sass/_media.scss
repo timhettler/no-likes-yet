@@ -1,7 +1,10 @@
+$image-width: 700px;
+$gutter-width: 20px;
+$container-width: 2860px;
+
 .media-container {
-    margin: 45px 0;
     position: relative;
-    left: -2.33%;
+    padding: 10px;
 
     &:after {
         content: '';
@@ -11,32 +14,103 @@
 }
 
 .media {
+    border: 1px solid #e1e1e1;
+    box-sizing: border-box;
     display: inline-block;
-    margin: {
-        left: 2.33%;
-        bottom: 2.33%;
-    };
+    position: relative;
     vertical-align: top;
-    width: 31%;
+    width: 24.5%;
+    margin-left: 0.66%;
+    margin-bottom: 0.66%;
+
+    &:nth-child(4n+1) {
+        margin-left: 0;
+    }
 }
 
-    .media__caption {
-        @include ellipsis();
-        color: #717171;
-        border-bottom: 1px solid #e6e6e6;
-        margin: 0.8em 0;
-        padding-bottom: 0.8em;
-        height: 1.2em;
+    .media__overlay {
+        position: absolute;
+        top: 15%;
+        left: 15%;
+        z-index: 1;
+        width: 70%;
+        transition: all 400ms;
+        opacity: 0;
+
+        .media:hover & {
+            opacity: 1;
+        }
+
+        &:after {
+            font-size: 17px;
+            line-height: 1.2;
+            left: 0;
+            color: #fff;
+            content: 'Be the first to like.';
+            position: absolute;
+            text-align: center;
+            top: 45%;
+            margin-top: -0.6em;
+            width: 100%;
+        }
+    }
+
+    .media__content {
+        background-color: #000;
+
+        img {
+            display: block;
+            transition: all 400ms;
+
+            .media:hover & {
+                opacity: 0.35;
+            }
+        }
+    }
+
+    .media__meta-data {
+        @include clearfix();
+        padding: percentage(20px / $image-width) percentage(15px / $image-width);
+        font-size: 13px;
+        transition: all 400ms;
+
+        .media:hover & {
+            background-color: #000;
+        }
+    }
+
+    .media__user {
+        color: #000;
+        float: left;
+        transition: all 400ms;
+
+        .media:hover & {
+            color: #fff;
+        }
+
+        &:before {
+            background-image: image-url('icon-ig--black.png');
+            background-size: contain;
+            background-repeat: no-repeat;
+            content: '';
+            display: inline-block;
+            height: 15px;
+            vertical-align: middle;
+            width: 15px;
+            margin-right: 7px;
+
+            .media:hover & {
+                background-image: image-url('icon-ig--white.png');
+            }
+        }
     }
 
     .media__timestamp {
         color: $color--gray;
-        font-size: 80%;
+        float: right;
+        transition: all 400ms;
 
-        &:before {
-            content: image-url('time.png');
-            vertical-align: middle;
-            display: inline-block;
-            margin-right: 5px;
+        .media:hover & {
+            color: #fff;
         }
     }

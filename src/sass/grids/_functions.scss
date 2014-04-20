@@ -1,0 +1,29 @@
+//*
+// Determines a width according to the number of columns set.
+// @param {Number} $column-count The number of columns an element should span.
+// @param {Number} $column-width The width of an individual column.
+// @param {Number} $gutter-width The width between columns.
+// @returns {Number} The cell width.
+@function nsg-grid-cell--width($column-count, $column-width:$grid-column-width, $gutter-width:$grid-gutter-width) {
+    @return ($column-width * $column-count) + ($gutter-width * ($column-count - 1));
+}
+
+//*
+// Determines a width according to the number of columns an element should be offset.
+// @param {Number} $offset-count The number of columns an element should be offset by.
+// @param {Number} $column-width The width of an individual column.
+// @param {Number} $gutter-width The width between columns.
+// @returns {Number} The offset width.
+@function nsg-grid-cell--offset-width($offset-count:0, $column-width:$grid-column-width, $gutter-width:$grid-gutter-width) {
+    @return ($column-width * $offset-count) + ($gutter-width * ($offset-count + 1));
+}
+
+//*
+// Special offsetting rules for the first-child of a fluid grid.
+// @param {Number} $offset-count The number of columns an element should be offset by.
+// @param {Number} $column-width The width of an individual column.
+// @param {Number} $gutter-width The width between columns.
+// @returns {Number} The offset width.
+@function nsg-grid-cell--first-child--offset-width($offset-count:0, $column-width:$grid-column-width, $gutter-width:$grid-gutter-width) {
+    @return ($column-width * $offset-count) + ($gutter-width * ($offset-count - 1)) + ($gutter-width);
+}

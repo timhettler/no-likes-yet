@@ -1,0 +1,24 @@
+@each $grid-type in $grid-types {
+    .nsg-grid-row--#{$grid-type} {
+        @extend %nsg-grid-row--#{$grid-type};
+
+        @for $column-count from 1 through $grid-max-columns {
+            > .nsg-grid-span--#{$column-count} {
+                @if $grid-type == "fluid" {
+                    @include nsg-grid-cell--fluid($column-count);
+                } @else {
+                    @include nsg-grid-cell--static($column-count);
+                }
+            }
+        }
+        @for $offset-count from 1 through ($grid-max-columns - 1) {
+            > .nsg-grid-offset--#{$offset-count} {
+                 @if $grid-type == "fluid" {
+                    @include nsg-grid-cell--fluid(0, $offset-count);
+                } @else {
+                    @include nsg-grid-cell--static(0, $offset-count);
+                }
+            }
+        }
+    }
+}

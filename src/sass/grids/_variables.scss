@@ -1,0 +1,25 @@
+//
+// Grid
+// --------------------------------------------------
+
+//*
+// Pre-defined grid-type names. Used in loops to automate class and placeholder generation.
+// @private
+// @type List
+$grid-types:                "static",
+                            "fluid" !default;
+
+//*
+// Used to determine the width of a fluid grid column
+// @type Number
+$grid-max-columns:          12 !default;
+
+//*
+// The width of a grid column
+// @type Number
+$grid-column-width:         60px !default;
+
+//*
+// The amount of space between grid columns
+// @type Number
+$grid-gutter-width:         20px !default;
