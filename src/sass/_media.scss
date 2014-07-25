@@ -22,6 +22,11 @@ $container-width: 2860px;
     width: 24.5%;
     margin-left: 0.66%;
     margin-bottom: 0.66%;
+    overflow: hidden;
+
+    &.can-like {
+        cursor: pointer;
+    }
 
     &:nth-child(4n+1) {
         margin-left: 0;
@@ -36,8 +41,9 @@ $container-width: 2860px;
         width: 70%;
         transition: all 400ms;
         opacity: 0;
+        pointer-events: none;
 
-        .media:hover & {
+        .can-like:hover & {
             opacity: 1;
         }
 
@@ -57,12 +63,17 @@ $container-width: 2860px;
 
     .media__content {
         background-color: #000;
+        height: 460px;
+
+        a {
+            display: block;
+        }
 
         img {
             display: block;
             transition: all 400ms;
 
-            .media:hover & {
+            .can-like:hover & {
                 opacity: 0.35;
             }
         }
@@ -74,7 +85,7 @@ $container-width: 2860px;
         font-size: 13px;
         transition: all 400ms;
 
-        .media:hover & {
+        .can-like:hover & {
             background-color: #000;
         }
     }
@@ -84,7 +95,7 @@ $container-width: 2860px;
         float: left;
         transition: all 400ms;
 
-        .media:hover & {
+        .can-like:hover & {
             color: #fff;
         }
 
@@ -99,7 +110,7 @@ $container-width: 2860px;
             width: 15px;
             margin-right: 7px;
 
-            .media:hover & {
+            .can-like:hover & {
                 background-image: image-url('icon-ig--white.png');
             }
         }
@@ -110,7 +121,7 @@ $container-width: 2860px;
         float: right;
         transition: all 400ms;
 
-        .media:hover & {
+        .can-like:hover & {
             color: #fff;
         }
     }

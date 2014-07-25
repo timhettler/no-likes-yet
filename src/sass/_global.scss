@@ -1,4 +1,5 @@
 $color--black: #000;
+$color--light: #fff;
 $color--gray: #999;
 $color--light-gray: #e1e1e1;
 $color--orange: #f9651b;
@@ -10,4 +11,26 @@ $base-font-family: 'Proxima Nova', 'Helvetica Neue', Helvetica, sans-serif;
     text-overflow: ellipsis;
     white-space: nowrap;
     width: 100%;
+}
+
+%fullscreen {
+    box-sizing: border-box;
+    height: 100%;
+    overflow: hidden;
+    width: 100%;
+}
+
+%not-a-button {
+    background-color: transparent;
+    border: none;
+    color: inherit;
+    cursor: pointer;
+    font: {
+        size: inherit;
+        family: inherit;
+    }
+    -webkit-font-smoothing: inherit;
+    margin: 0;
+    outline: none;
+    padding: 0;
 }

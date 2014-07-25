@@ -6,9 +6,16 @@
     <title><%= title %></title>
     <meta name="description" content="<%= description %>" />
     <meta name="viewport" content="<%= viewport %>" />
+    <meta property="og:url" content="<%= url %>" />
+    <meta property="og:title" content="<%= title %>" />
+    <meta property="og:description" content="<%= description %>" />
+    <meta property="og:image" content="<%= image %>" />
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="<%= title %>">
+    <meta name="twitter:description" content="<%= description %>">
+    <meta name="twitter:image:src" content="<%= image %>">
+    <meta name="twitter:domain" content="<%= url %>">
     <!-- /build -->
-
-    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
     <!-- compile:style app -->
         <!-- build:style app --><!-- /build -->
     <!-- /compile -->
@@ -16,19 +23,8 @@
         <!-- build:script modernizr --><!-- /build -->
     <!-- /compile -->
 </head>
-<body ng-app="app">
-    <header>
-        <h1 class="logo">No Likes Yet.</h1>
-        <ul class="main-nav">
-            <li><a href="#">My Photos</a></li>
-            <li><a href="#">My Friends Photos</a></li>
-        </ul>
-        <div class="about">?</div>
-    </header>
-    <div class="main" ng-controller="MainCtrl">
-        <a ng-if="!hasAccessToken" ng-href="https://instagram.com/oauth/authorize/?client_id={{clientId}}&amp;redirect_uri={{redirectUri}}&amp;response_type=token&amp;scope=basic+likes">Log In</a>
-        <ng-view></ng-view>
-    </div>
+<body ng-app="app" check-user>
+    <ng-view></ng-view>
     <!-- compile:script app -->
     <!-- build:script optional jquery --><!-- /build -->
     <!-- build:script optional angular --><!-- /build -->

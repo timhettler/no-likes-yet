@@ -92,13 +92,14 @@ module.exports = function ( grunt ) {
       options: {
         curly: true,
         immed: true,
-        newcap: false,
+        newcap: true,
         noarg: true,
         sub: true,
         eqnull: true,
         browser: true,
+        debug: true,
         globals: {
-          angular: true
+            angular: true
         }
       },
     },
@@ -171,7 +172,7 @@ module.exports = function ( grunt ) {
 
       compass: {
         files: [ 'src/sass/**/*.scss' ],
-        tasks: [ 'compass:dev' ]
+        tasks: [ 'compass:dev', 'autoprefixer:build' ]
       },
 
       express: {
@@ -218,6 +219,18 @@ module.exports = function ( grunt ) {
           environment: 'production'
         }
       }
+    },
+
+    // Grunt Autoprefixer
+    // Parses CSS and adds vendor-prefixed CSS properties using the Can I Use database.
+    // https://github.com/nDmitry/grunt-autoprefixer
+    autoprefixer: {
+        build: {
+            src: '<%= build_dir %>/css/**/*.css',
+        },
+        dist: {
+            src: '<%= compile_dir %>/css/**/*.css',
+        }
     },
 
     // sass: {
@@ -350,14 +363,6 @@ module.exports = function ( grunt ) {
                 verbose: true
             }
         }
-    },
-
-    express: {
-      dev: {
-        options: {
-          script: 'server/server.js'
-        }
-      }
     }
 
   };
@@ -372,8 +377,7 @@ module.exports = function ( grunt ) {
         'jshint', 'clean', 'html2js', 'bower',
         'copy:build_assets', 'copy:build_data', 'copy:build_appjs',
         'copy:build_partials',
-        'compass:dev', 'htmlbuild:build',
-        //'express:dev'
+        'compass:dev', 'autoprefixer:build', 'htmlbuild:build'
     ]);
 
     grunt.registerTask('compile', [

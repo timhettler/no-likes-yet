@@ -1,25 +1,55 @@
 var app = angular.module('app');
 
-var MediaCtrl = app.controller('MediaCtrl', function ($scope, $routeParams, ipCookie, $q, instagramService) {
-    var imagesPerPage = 1;
+var MediaCtrl = app.controller('MediaCtrl', function ($scope, $routeParams, $location, ipCookie, $q, instagramService) {
+    var imagesPerPage = 8,
+        worldCoordinates = [
+            [40.781256,-73.966441],
+            [43.518556,-73.67054],
+            [42.457407,-2.449265],
+            [43.117275,-76.248722],
+            [35.245619,-101.821289],
+            [61.227957,-149.897461],
+            [45.521744,-122.67334],
+            [-34.599722,-58.381944],
+            [-41.47566,-72.949219],
+            [28.410067, -81.583699],
+            [38.68551,-96.503906]
+        ],
+        worldToken = Math.floor(Math.random() * (worldCoordinates.length - 1));
+
+    $scope.toggleInfo = function () {
+        $scope.showInfo = !$scope.showInfo;
+    };
+
+    $scope.changeType = function (type) {
+        $scope.type = type;
+
+        if ($scope.view[type].length === 0) {
+            $scope.getMedia();
+        }
+    };
 
     var getUserData = function () {
-        $scope.user = instagramService.getUserData($routeParams.username);
+        instagramService.getSelfData()
+            .then(function (user) {
+                console.log('got user data');
+                $scope.user = user;
 
-        if($scope.user) {
-            createWall();
-        } else {
-            console.log('searching for user %s...', $routeParams.username);
-            instagramService.searchForUser($routeParams.username)
-                .then(function (result) {
-                    console.log('found user', result);
-                    $scope.user = result;
-                    createWall();
-                }, function () {
-                    //TODO: user not found
-                    console.log('user not found');
-                });
-        }
+                $scope.media[$scope.user.id] = {
+                    pagination: {},
+                    data: []
+                };
+
+                $scope.busy = false;
+
+                $scope.getMedia();
+            },
+            function (meta) {
+                console.log('access token invalid');
+                instagramService.setAccessToken(null);
+                ipCookie.remove('access_token');
+                $location.url('/', true);
+            });
 
 
     };
@@ -75,7 +105,6 @@ var MediaCtrl = app.controller('MediaCtrl', function ($scope, $routeParams, ipCo
     $scope.getUserMediaPage = function (userId) {
         var deferred = $q.defer(),
             media = [],
-            token = 0,
             getData = function () {
                 var next_max_id = ($scope.media[userId].pagination.next_max_id) ? $scope.media[userId].pagination.next_max_id : null;
                 instagramService.getUserMedia(userId, next_max_id)
@@ -122,10 +151,56 @@ var MediaCtrl = app.controller('MediaCtrl', function ($scope, $routeParams, ipCo
         getNextPage();
 
         return deferred.promise;
+    };
 
-            // return $q.all($scope.following.map(function (user) {
-            //     return $scope.getUserMedia(user);
-            // }));
+    var getWorldMediaPage = function (coords) {
+        var deferred = $q.defer(),
+            media = [],
+            getData = function () {
+                var next_max_id = ($scope.worldMedia[worldToken].max_timestamp) ? $scope.worldMedia[worldToken].max_timestamp : null;
+                instagramService.getWorldMedia(coords, next_max_id)
+                    .then(function (result) {
+                        deferred.resolve(result);
+                    });
+            };
+        if ($scope.worldMedia[worldToken].max_timestamp !== false) {
+            getData();
+        }
+
+        return deferred.promise;
+    };
+
+    var getWorldPage = function () {
+        var deferred = $q.defer(),
+            media = [],
+            getNextPage = function () {
+                getWorldMediaPage(worldCoordinates[worldToken])
+                    .then(function (result) {
+                        console.log(worldToken);
+                        console.log('found %s images for %s', filterLikedMedia(result.data).length, worldCoordinates[worldToken].join());
+                        $scope.worldMedia[worldToken].max_timestamp = result.data[result.data.length - 1].created_time - 1000;
+                        $scope.worldMedia[worldToken].data = $scope.worldMedia[worldToken].data.concat(filterLikedMedia(result.data));
+                        media = media.concat(filterLikedMedia(result.data));
+                        worldToken = (worldToken + 1) % worldCoordinates.length;
+                        if (media.length < imagesPerPage) {
+                            getNextPage();
+                        } else {
+                            deferred.resolve(media);
+                        }
+                    },
+                    function () {
+                        worldToken = (worldToken + 1) % worldCoordinates.length;
+                        if (falseCount < worldCoordinates.length) {
+                            getNextPage();
+                        } else {
+                            deferred.resolve(media);
+                        }
+                    });
+            };
+
+        getNextPage();
+
+        return deferred.promise;
     };
 
     var getFollowingList = function () {
@@ -152,45 +227,67 @@ var MediaCtrl = app.controller('MediaCtrl', function ($scope, $routeParams, ipCo
         return deferred.promise;
     };
 
-    $scope.doScroll = function () {
-        console.log($scope.busy);
-        if (!$scope.busy) {
-            createWall();
-        }
-    };
+    $scope.getMedia = function () {
+        if($scope.busy) {return;}
 
-    var createWall = function () {
-        console.log('getting wall');
         $scope.busy = true;
-        // $scope.media[$scope.user.id] = {
-        //     pagination: {},
-        //     data: []
-        // };
 
-        // $scope.getUserMedia($scope.user)
-        //     .then(function (result) {
-        //         $scope.media[$scope.user.id].data = result;
-        //     });
+        if ($scope.type === 'self') {
+            $scope.getUserMedia($scope.user)
+                .then(function (media) {
+                    $scope.view.self = $scope.view.self.concat(media);
+                    $scope.busy = false;
+                });
+        } else if ($scope.type === 'friends') {
+            $scope.busy = true;
 
-        getFollowingList()
-            .then(function () {
-                console.log('got following list');
-                getFollowerPage()
-                    .then(function (media) {
-                        $scope.followingMedia = $scope.followingMedia.concat(media);
-                        console.log('follower page', media);
-                        $scope.busy = false;
-                    });
-            });
+            getFollowingList()
+                .then(function () {
+                    getFollowerPage()
+                        .then(function (media) {
+                            $scope.view.friends = $scope.view.friends.concat(media);
+                            console.log('follower page', media);
+                            $scope.busy = false;
+                        });
+                });
+
+
+        } else if ( $scope.type === 'world' ) {
+            $scope.busy = true;
+
+            if ($scope.worldMedia.length === 0) {
+                worldCoordinates.forEach(function (v,i) {
+                    $scope.worldMedia[i] = {
+                        max_timestamp: Math.round((Date.now()/1000) - (3600 * (Math.random() * 36) )), // buffer to make photos seem more random
+                        data: []
+                    };
+                });
+            }
+
+            getWorldPage()
+                .then(function (media) {
+                    $scope.view.world = $scope.view.world.concat(media);
+                    console.log('world page', media);
+                    $scope.busy = false;
+                });
+        }
     };
 
 
     var init = function () {
         $scope.busy = true;
+        $scope.showInfo = false;
         $scope.followingToken = 0;
         $scope.following = [];
         $scope.followingMedia = [];
+        $scope.worldMedia = [];
         $scope.media = {};
+        $scope.type = $routeParams.type;
+        $scope.view = {
+            world: [],
+            friends: [],
+            self: []
+        };
 
         getUserData();
     };

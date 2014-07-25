@@ -4,8 +4,12 @@
 
 @import "compass";
 
+@import "_buttons.scss";
 @import "_search.scss";
 @import "_media.scss";
+@import "_splash.scss";
+@import "_loading.scss";
+@import "_info.scss";
 
 body {
     font-family: $base-font-family;
@@ -15,15 +19,26 @@ img {
     max-width: 100%;
 }
 
-header {
-    border-bottom: 1px solid $color--light-gray;
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    padding: 30px 40px 0;
+[ng-click] {
+    cursor: pointer;
 }
 
-.logo {
+.nly-header {
+    align-items: flex-start;
+    background-color: #fff;
+    border-bottom: 1px solid $color--light-gray;
+    box-sizing: border-box;
+    display: flex;
+    justify-content: space-between;
+    left: 0;
+    padding: 30px 40px 0;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1;
+}
+
+.nly-logo {
     color: $color--orange;
     font-weight: bold;
     font-size: 16px;
@@ -41,17 +56,24 @@ header {
     }
 }
 
-.main-nav {
+.nly-main-nav {
+    color: $color--gray;
     display: flex;
     text-transform: uppercase;
     font-size: 13px;
 
     li {
-        border-bottom: 5px solid $color--light-gray;
+        @include transition(border-color 250ms);
+        border-bottom: 5px solid transparent;
+        color: $color--gray;
         margin-left: 34px;
         padding-bottom: 30px;
         position: relative;
         line-height: 1;
+
+        &.is-selected {
+            border-bottom-color: $color--light-gray;
+        }
 
         &:before {
             background-color: $color--light-gray;
@@ -76,17 +98,14 @@ header {
             }
         }
     }
-
-    a {
-        &,
-        &:link {
-            color: $color--gray;
-            text-decoration: none;
-        }
-    }
 }
 
-.about {
+.nly-about-icon {
     color: $color--orange;
+    cursor: pointer;
     font-size: 24px;
+}
+
+.nly-main {
+    padding-top: 79px;
 }
