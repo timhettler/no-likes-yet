@@ -1,0 +1,56 @@
+//*
+// Common properties for grid cells
+%nsg-grid-span {
+  float: left;
+  min-height: 1px; // prevent collapsing columns
+}
+
+//*
+// Common properties for static grid cells
+// @extends %nsg-grid-span
+%nsg-grid-span--static {
+  @extend %nsg-grid-span;
+}
+
+//*
+// Common properties for fluid grid cells
+// @extends %nsg-grid-span
+%nsg-grid-span--fluid {
+  @extend %nsg-grid-span;
+
+  &:first-child {
+    margin-left: 0;
+  }
+}
+
+//*
+// Common properties for grid rows
+// @include nsg-clearfix
+%nsg-grid-row {
+  &:before,
+    &:after {
+        display: table;
+        content: " ";
+        line-height: 0;
+    }
+
+    &:after {
+        clear: both;
+    }
+}
+
+//*
+// Common properties for static grid rows
+// @extends %nsg-grid-row
+// @include nsg-grid-row--static
+%nsg-grid-row--static {
+  @extend %nsg-grid-row;
+  @include nsg-grid-row--static();
+}
+
+//*
+// Common properties for fluid grid rows
+// @extends %nsg-grid-row
+%nsg-grid-row--fluid {
+  @extend %nsg-grid-row;
+}

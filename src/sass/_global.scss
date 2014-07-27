@@ -1,12 +1,48 @@
-$color--almost-black: #121212;
-$color--gray: #979797;
+$color--black: #000;
+$color--light: #fff;
+$color--gray: #999;
+$color--light-gray: #e1e1e1;
+$color--orange: #f9651b;
 
-$base-font-size: 18px;
-$base-font-family: 'Myriad Pro', 'Helvetica Neue', Helvetica, sans-serif;
+$base-font-family: 'Proxima Nova', 'Helvetica Neue', Helvetica, sans-serif;
+
+@mixin mobile() {
+    @media (max-width: 600px) {
+        @content;
+    }
+}
+
+@mixin desktop() {
+    @media (min-width: 601px) {
+        @content;
+    }
+}
 
 @mixin ellipsis() {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
     width: 100%;
+}
+
+%fullscreen {
+    box-sizing: border-box;
+    height: 100%;
+    overflow: hidden;
+    width: 100%;
+}
+
+%not-a-button {
+    background-color: transparent;
+    border: none;
+    color: inherit;
+    cursor: pointer;
+    font: {
+        size: inherit;
+        family: inherit;
+    }
+    -webkit-font-smoothing: inherit;
+    margin: 0;
+    outline: none;
+    padding: 0;
 }

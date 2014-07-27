@@ -1,49 +1,33 @@
 @import "_reset.scss";
+@import "_fonts.scss";
 @import "_global.scss";
 
+@import "compass";
+
+@import "_buttons.scss";
 @import "_search.scss";
 @import "_media.scss";
+@import "_splash.scss";
+@import "_loading.scss";
+@import "_info.scss";
+@import "_header.scss";
+
+body {
+    font-family: $base-font-family;
+}
 
 img {
     max-width: 100%;
 }
 
-.logo {
-    background-image: image-url('NLY.png');
-    background-size: contain;
-    direction: rtl;
-    display: inline-block;
-    height: 90px;
-    overflow: hidden;
-    text-indent: 100%;
-    white-space: nowrap;
-    width: 98px;
+[ng-click] {
+    cursor: pointer;
 }
 
-header {
-    background-color: $color--almost-black;
-    color: #fff;
-    padding: 68px 0;
-    text-align: center;
+.nly-main {
+    padding-top: 79px;
 
-    > .tagline {
-        font: {
-            family: $base-font-family;
-            size: 25px;
-        };
-        margin-top: 15px;
+    @include mobile () {
+        padding-top: 50px;
     }
 }
-
-.main {
-    font: {
-        size: $base-font-size;
-        family: $base-font-family;
-    };
-    padding: 45px;
-}
-
-    .main-container {
-        max-width: 1300px;
-        margin: 0 auto;
-    }

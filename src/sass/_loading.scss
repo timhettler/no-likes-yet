@@ -1,0 +1,60 @@
+$loading-bauble-size: 28px;
+
+@keyframes bounce {
+    0% {
+        transform: translateY(0);
+    }
+    16.5% {
+        transform: translateY(-100%);
+    }
+    33% {
+        transform: translateY(0);
+    }
+    100% {
+        transform: translateY(0);
+    }
+}
+
+@mixin loading-bauble() {
+    animation: bounce 1s infinite;
+    background-color: $color--orange;
+    border-radius: 50%;
+    height: $loading-bauble-size;
+    width: $loading-bauble-size;
+
+    @include mobile() {
+        height: $loading-bauble-size/2;
+        width: $loading-bauble-size/2;
+    }
+}
+
+.nly-loading-container {
+    padding: $loading-bauble-size 0;
+    text-align: center;
+
+    @include mobile() {
+        padding: $loading-bauble-size/2 0;
+    }
+}
+
+.nly-loading-icon {
+    @include loading-bauble();
+    display: inline-block;
+    position: relative;
+
+    &--1 {
+
+    }
+
+    &--2 {
+        animation-delay: 0.3s;
+
+    }
+
+    &--3 {
+        animation-delay: 0.6s;
+
+    }
+
+
+}

@@ -1,0 +1,69 @@
+//*
+// Sets an element's width and margin according to the defined grid system.
+// TODO '$grid-max-columns' is confusing
+// @private
+// @param {String} $grid-type The type of grid system to use. Accepts "static" or "fluid".
+// @param {Number} $column-count The number of columns an element should span.
+// @param {Number} $offset-count The number of columns an element should be offset by.
+// @param {Number} $column-count--max The maximum number of columns an element can span.
+// @param {Number} $column-width The width of an individual column.
+// @param {Number} $gutter-width The width between columns.
+@mixin nsg-grid-cell($grid-type, $column-count:1, $offset-count:0, $column-count--max:$grid-max-columns, $column-width:$grid-column-width, $gutter-width:$grid-gutter-width) {
+    // Change widths to percentages if $grid-type is "fluid"
+    $row-width:         ($column-count--max * $column-width) + ($gutter-width * ($column-count--max - 1));
+    $column-width:      if($grid-type == "static", $column-width, percentage($column-width / $row-width));
+    $gutter-width:      if($grid-type == "static", $gutter-width, percentage($gutter-width / $row-width));
+
+    margin-left: nsg-grid-cell--offset-width($offset-count, $column-width, $gutter-width);
+    @if $column-count > 0 {
+        float: left;
+        min-height: 1px; // prevent collapsing columns
+        width: nsg-grid-cell--width($column-count, $column-width, $gutter-width);
+    }
+
+    @if $grid-type == "fluid" {
+        &:first-child {
+            margin-left: nsg-grid-cell--first-child--offset-width($offset-count, $column-width, $gutter-width);
+        }
+    }
+}
+
+//*
+// Sets an element's width and margin according to the defined fluid grid system.
+// @param {String} $grid-type The type of grid system to use. Accepts "static" or "fluid".
+// @param {Number} $column-count The number of columns an element should span.
+// @param {Number} $offset-count The number of columns an element should be offset by.
+// @param {Number} $column-count--max The maximum number of columns an element can span.
+// @param {Number} $column-width The width of an individual column.
+// @param {Number} $gutter-width The width between columns.
+// @includes nsg-grid-cell
+@mixin nsg-grid-cell--fluid($args...) {
+    @include nsg-grid-cell("fluid", $args...);
+}
+
+//*
+// Sets an element's width and margin according to the defined fluid grid system.
+// @param {String} $grid-type The type of grid system to use. Accepts "static" or "fluid".
+// @param {Number} $column-count The number of columns an element should span.
+// @param {Number} $offset-count The number of columns an element should be offset by.
+// @param {Number} $column-count--max The maximum number of columns an element can span.
+// @param {Number} $column-width The width of an individual column.
+// @param {Number} $gutter-width The width between columns.
+// @includes nsg-grid-cell
+@mixin nsg-grid-cell--static($args...) {
+    @include nsg-grid-cell("static", $args...);
+}
+
+//*
+// Defines an element as a static grid container.
+// @param {Number} $gutter-width The width between columns.
+@mixin nsg-grid-row--static($gutter-width:$grid-gutter-width) {
+    @extend %nsg-grid-row--static;
+    margin-left: $gutter-width * -1;
+}
+
+//*
+// Defines an element as a fluid grid container.
+@mixin nsg-grid-row--fluid() {
+    @extend %nsg-grid-row--fluid;
+}

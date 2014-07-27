@@ -78,6 +78,18 @@ app.factory('instagramService', function ($http, $q, instagramApiData) {
         return deferred.promise;
     };
 
+    publicMethods.getWorldMedia = function (coords, max_timestamp) {
+        var deferred = $q.defer(),
+            mediaUrl = configureUrl(baseUrl + 'media/search/', {'lat':coords[0],'lng':coords[1],'max_timestamp':max_timestamp,'distance':5000});
+
+            getData(mediaUrl)
+                .then(function (result) {
+                    deferred.resolve(result);
+                });
+
+        return deferred.promise;
+    };
+
     publicMethods.getUserFollowing = function (uid) {
         var deferred = $q.defer(),
             followingUrl = configureUrl(baseUrl + 'users/' + uid + '/follows/'),
@@ -129,6 +141,23 @@ app.factory('instagramService', function ($http, $q, instagramApiData) {
 
     publicMethods.hasAccessToken = function () {
         return accessToken !== null;
+    };
+
+    publicMethods.setLike = function (mediaId) {
+        var deferred = $q.defer();
+
+        $http.
+            post(
+                'https://api.instagram.com/v1/media/'+mediaId+'/likes?access_token='+accessToken
+            ).
+            success(function(response, status, headers, config) {
+                deferred.resolve(response);
+            }).
+            error(function(response, status, headers, config) {
+                deferred.reject(response);
+            });
+
+        return deferred.promise;
     };
 
     return publicMethods;

@@ -1,0 +1,43 @@
+.nly-splash {
+    @extend %fullscreen;
+    position: fixed;
+}
+
+    .nly-splash__bg {
+        @extend %fullscreen;
+        background-size: cover;
+    }
+
+    .nly-splash__content {
+        @include translateY(-50%);
+        left: 0;
+        position: absolute;
+        text-align: center;
+        top: 50%;
+        width: 100%;
+    }
+
+        .nly-splash__icon {
+            margin: 0 auto 50px;
+            width: 162px;
+
+            @include mobile() {
+                margin-bottom: 25px;
+                width: 81px;
+            }
+        }
+
+        .nly-splash__headline {
+            color: $color--light;
+            font-size: 50px;
+            margin-bottom: 50px;
+
+            @include mobile() {
+                font-size: 22px;
+            }
+        }
+
+        .nly-splash__button {
+            margin: 0 auto;
+            max-width: 472px;
+        }

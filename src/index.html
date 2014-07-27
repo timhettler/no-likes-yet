@@ -6,9 +6,24 @@
     <title><%= title %></title>
     <meta name="description" content="<%= description %>" />
     <meta name="viewport" content="<%= viewport %>" />
-    <!-- /build -->
+    <meta property="og:url" content="<%= url %>" />
+    <meta property="og:title" content="<%= title %>" />
+    <meta property="og:description" content="<%= description %>" />
+    <meta property="og:image" content="<%= image %>" />
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="<%= title %>">
+    <meta name="twitter:description" content="<%= description %>">
+    <meta name="twitter:image:src" content="<%= image %>">
+    <meta name="twitter:domain" content="<%= url %>">
+    <link href="assets/favicon.png" rel="shortcut icon" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <link rel="apple-touch-icon" href="touch-icon-iphone.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="touch-icon-ipad.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="touch-icon-iphone-retina.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="touch-icon-ipad-retina.png">
 
-    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+    <!-- /build -->
     <!-- compile:style app -->
         <!-- build:style app --><!-- /build -->
     <!-- /compile -->
@@ -16,23 +31,28 @@
         <!-- build:script modernizr --><!-- /build -->
     <!-- /compile -->
 </head>
-<body ng-app="app">
-    <header>
-        <h1 class="logo">No Likes Yet</h1>
-        <p class="tagline">All the photos on Instagram that could use some love.</p>
-    </header>
-    <div class="main" ng-controller="MainCtrl">
-        <div class="main-container">
-            <search ng-if="hasAccessToken"></search>
-            <a ng-if="!hasAccessToken" ng-href="https://instagram.com/oauth/authorize/?client_id={{clientId}}&amp;redirect_uri={{redirectUri}}&amp;response_type=token&amp;scope=basic+likes">Log In</a>
-            <ng-view></ng-view>
-        </div>
-    </div>
+<body ng-app="app" check-user>
+    <ng-view></ng-view>
     <!-- compile:script app -->
-    <!-- build:script optional jquery --><!-- /build -->
-    <!-- build:script optional angular --><!-- /build -->
-    <!-- build:script optional components --><!-- /build -->
+    <!-- build:script optional vendor --><!-- /build -->
     <!-- build:script app --><!-- /build -->
     <!-- /compile -->
+    <script>
+  window.fbAsyncInit = function() {
+        FB.init({
+          appId      : '675619645861071',
+          xfbml      : true,
+          version    : 'v2.0'
+        });
+      };
+
+      (function(d, s, id){
+         var js, fjs = d.getElementsByTagName(s)[0];
+         if (d.getElementById(id)) {return;}
+         js = d.createElement(s); js.id = id;
+         js.src = "//connect.facebook.net/en_US/sdk.js";
+         fjs.parentNode.insertBefore(js, fjs);
+       }(document, 'script', 'facebook-jssdk'));
+    </script>
 </body>
 </html>

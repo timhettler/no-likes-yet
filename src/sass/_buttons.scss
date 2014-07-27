@@ -1,0 +1,53 @@
+$button-color--text: $color--light;
+$button-color--bg: $color--orange;
+$button-color--border: #c0c0c0;
+$button-border-radius: 0.52em;
+
+.nly-button {
+    @extend %not-a-button;
+    background-color: $button-color--text;
+    border-radius: $button-border-radius;
+    color: $button-color--bg;
+    display: inline-block;
+    font-size: 25px;
+    font-weight: bold;
+    letter-spacing: 2px;
+    line-height: 1;
+    padding: 1.88em 1em 1.32em;
+    position: relative;
+    text-align: center;
+    text-transform: uppercase;
+    text-decoration: none !important;
+
+    @include mobile() {
+        font-size: 10px;
+    }
+
+    &:before {
+        background-color: $button-color--border;
+        border-radius: $button-border-radius;
+        content: '';
+        height: 100%;
+        left: 0;
+        position: absolute;
+        top: 8px;
+        width: 100%;
+        z-index: -1;
+
+        @include mobile() {
+            top: 4px;
+        }
+    }
+
+    &:active {
+        top: 8px;
+
+        @include mobile() {
+            top: 4px;
+        }
+
+        &:before {
+            top: 0;
+        }
+    }
+}
