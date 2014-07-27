@@ -3,22 +3,36 @@ var app = angular.module('app');
 var MediaCtrl = app.controller('MediaCtrl', function ($scope, $routeParams, $location, ipCookie, $q, instagramService) {
     var imagesPerPage = 8,
         worldCoordinates = [
-            [40.781256,-73.966441],
-            [43.518556,-73.67054],
-            [42.457407,-2.449265],
-            [43.117275,-76.248722],
-            [35.245619,-101.821289],
-            [61.227957,-149.897461],
-            [45.521744,-122.67334],
-            [-34.599722,-58.381944],
-            [-41.47566,-72.949219],
+            [40.781256, -73.966441],
+            [43.518556, -73.67054],
+            [42.457407, -2.449265],
+            [43.117275, -76.248722],
+            [35.245619, -101.821289],
+            [61.227957, -149.897461],
+            [45.521744, -122.67334],
+            [-34.599722, -58.381944],
+            [-41.47566, -72.949219],
             [28.410067, -81.583699],
-            [38.68551,-96.503906]
+            [38.68551, -96.503906],
+            [41.7898354, -69.9897323],
+            [30.24011, -97.712166],
+            [67.855856, 20.225294],
+            [48.8566667, 2.3509871],
+            [40.0149856, -105.2705456],
+            [43.2504393, -5.9832577],
+            [41.512995, 14.063514],
+            [40.65,-73.95],
+            [33.8575,-117.87556],
+            [39.1910983,-106.8175387]
         ],
-        worldToken = Math.floor(Math.random() * (worldCoordinates.length - 1));
+        worldToken;
 
     $scope.toggleInfo = function () {
         $scope.showInfo = !$scope.showInfo;
+    };
+
+    $scope.toggleNav = function () {
+        $scope.showMobileNav = !$scope.showMobileNav;
     };
 
     $scope.changeType = function (type) {
@@ -27,6 +41,12 @@ var MediaCtrl = app.controller('MediaCtrl', function ($scope, $routeParams, $loc
         if ($scope.view[type].length === 0) {
             $scope.getMedia();
         }
+
+        //$location.path('/media/'+type);
+    };
+
+    var getRandomToken = function () {
+        return Math.floor(Math.random() * (worldCoordinates.length - 1));
     };
 
     var getUserData = function () {
@@ -174,14 +194,13 @@ var MediaCtrl = app.controller('MediaCtrl', function ($scope, $routeParams, $loc
         var deferred = $q.defer(),
             media = [],
             getNextPage = function () {
+                worldToken = getRandomToken();
                 getWorldMediaPage(worldCoordinates[worldToken])
                     .then(function (result) {
-                        console.log(worldToken);
                         console.log('found %s images for %s', filterLikedMedia(result.data).length, worldCoordinates[worldToken].join());
                         $scope.worldMedia[worldToken].max_timestamp = result.data[result.data.length - 1].created_time - 1000;
                         $scope.worldMedia[worldToken].data = $scope.worldMedia[worldToken].data.concat(filterLikedMedia(result.data));
                         media = media.concat(filterLikedMedia(result.data));
-                        worldToken = (worldToken + 1) % worldCoordinates.length;
                         if (media.length < imagesPerPage) {
                             getNextPage();
                         } else {
@@ -189,7 +208,6 @@ var MediaCtrl = app.controller('MediaCtrl', function ($scope, $routeParams, $loc
                         }
                     },
                     function () {
-                        worldToken = (worldToken + 1) % worldCoordinates.length;
                         if (falseCount < worldCoordinates.length) {
                             getNextPage();
                         } else {
@@ -277,6 +295,7 @@ var MediaCtrl = app.controller('MediaCtrl', function ($scope, $routeParams, $loc
     var init = function () {
         $scope.busy = true;
         $scope.showInfo = false;
+        $scope.showMobileNav = false;
         $scope.followingToken = 0;
         $scope.following = [];
         $scope.followingMedia = [];

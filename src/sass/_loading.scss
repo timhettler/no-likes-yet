@@ -5,7 +5,7 @@ $loading-bauble-size: 28px;
         transform: translateY(0);
     }
     16.5% {
-        transform: translateY($loading-bauble-size * -1);
+        transform: translateY(-100%);
     }
     33% {
         transform: translateY(0);
@@ -21,11 +21,20 @@ $loading-bauble-size: 28px;
     border-radius: 50%;
     height: $loading-bauble-size;
     width: $loading-bauble-size;
+
+    @include mobile() {
+        height: $loading-bauble-size/2;
+        width: $loading-bauble-size/2;
+    }
 }
 
 .nly-loading-container {
     padding: $loading-bauble-size 0;
     text-align: center;
+
+    @include mobile() {
+        padding: $loading-bauble-size/2 0;
+    }
 }
 
 .nly-loading-icon {

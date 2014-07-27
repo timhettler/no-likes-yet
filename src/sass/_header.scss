@@ -1,0 +1,185 @@
+.nly-header {
+    background-color: #fff;
+    border-bottom: 1px solid $color--light-gray;
+    box-sizing: border-box;
+    height: 80px;
+    left: 0;
+    padding: 30px 40px 0;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 2;
+
+    @include mobile () {
+        height: 50px;
+    }
+}
+
+.nly-logo {
+    color: $color--orange;
+    font-weight: bold;
+    font-size: 16px;
+    position: absolute;
+    top: 50%;
+    z-index: 1;
+
+    @include mobile () {
+        left: 50%;
+        transform: translate(-50%,-50%);
+    }
+
+    @include desktop () {
+        left: 15px;
+        transform: translateY(-50%);
+    }
+
+    &:before {
+        background-image: image-url('heart-large.png');
+        background-size: contain;
+        background-repeat: no-repeat;
+        content: '';
+        display: inline-block;
+        vertical-align: middle;
+        width: 20px;
+        height: 20px;
+        margin-right: 13px;
+    }
+}
+
+.nly-main-nav {
+    font-size: 13px;
+    position: absolute;
+    text-transform: uppercase;
+    z-index: 1;
+
+    &.is-hidden {
+        display: none;
+    }
+
+    @include desktop() {
+        bottom: 0;
+        color: $color--gray;
+        display: flex;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 400px;
+
+        > ul {
+            display: flex;
+        }
+    }
+
+    @include mobile() {
+        left: 0;
+        top: 0;
+        width: 100%;
+    }
+
+    &--desktop {
+        @include mobile() {
+            display: none !important;
+        }
+    }
+
+    &--mobile {
+        @include desktop() {
+            display: none !important;
+        }
+    }
+}
+
+    .nly-main-nav__item {
+        @include desktop () {
+        @include transition(border-color 250ms);
+            border-bottom: 5px solid transparent;
+            color: $color--gray;
+            margin-left: 34px;
+            padding-bottom: 30px;
+            position: relative;
+            line-height: 1;
+
+            &.is-selected {
+                border-bottom-color: $color--light-gray;
+            }
+
+            &:before {
+                background-color: $color--light-gray;
+                border-radius: 100%;
+                display: inline-block;
+                vertical-align: middle;
+                content: '';
+                width: 2px;
+                height: 2px;
+                margin-right: 15px;
+                position: absolute;
+                right: 100%;
+                top: 0.25em;
+                margin-top: -1px;
+            }
+
+            &:first-child {
+                margin-left: 0;
+
+                &:before {
+                    content: none;
+                }
+            }
+        }
+
+        @include mobile() {
+            background-color: $color--orange;
+            border-bottom: 2px solid #fff;
+            color: #fff;
+            padding: 20px;
+            text-transform: uppercase;
+
+            &.is-selected {
+                background-color: $color--black;
+            }
+        }
+    }
+
+    .nly-main-nav__search {
+        border: none;
+        background-color: #fff;
+        display: block;
+        outline: none;
+        padding: 15px;
+        font-family: $base-font-family;
+        font-size: 16px;
+        width: 100%;
+    }
+
+    .nly-main-nav__close {
+        background-image: url(../assets/close.png);
+        background-size: contain;
+        height: 16px;
+        position: absolute;
+        right: 15px;
+        top: 15px;
+        width: 16px;
+    }
+
+    .nly-main-nav__toggle {
+        @include desktop() {
+            display: none;
+        }
+        background-image: url(../assets/search.png);
+        background-size: contain;
+        height: 20px;
+        left: 15px;
+        position: absolute;
+        transform: translateY(-50%);
+        top: 50%;
+        width: 20px;
+    }
+
+    .nly-main-nav__about{
+        color: $color--orange;
+        cursor: pointer;
+        font-size: 24px;
+        position: absolute;
+        right: 15px;
+        top: 50%;
+        transform: translateY(-50%);
+    }

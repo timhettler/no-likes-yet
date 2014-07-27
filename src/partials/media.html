@@ -1,21 +1,38 @@
 <header class="nly-header">
     <h1 class="nly-logo">No Likes Yet.</h1>
-    <ul class="nly-main-nav">
-        <li ng-class="{'is-selected':type === 'world'}" ng-click="changeType('world')">The World</li>
-        <li ng-class="{'is-selected':type === 'self'}" ng-click="changeType('self')">My Photos</li>
-        <li ng-class="{'is-selected':type === 'friends'}" ng-click="changeType('friends')">My Friends Photos</li>
-    </ul>
-    <div class="nly-about-icon" ng-click="toggleInfo();">?</div>
+    <div class="nly-main-nav nly-main-nav--desktop">
+        <ul>
+            <li class="nly-main-nav__item" ng-class="{'is-selected':type === 'world'}" ng-click="changeType('world')">The World</li>
+            <li class="nly-main-nav__item" ng-class="{'is-selected':type === 'self'}" ng-click="changeType('self')">My Photos</li>
+            <li class="nly-main-nav__item" ng-class="{'is-selected':type === 'friends'}" ng-click="changeType('friends')">My Friends Photos</li>
+        </ul>
+    </div>
+    <div class="nly-main-nav nly-main-nav--mobile" ng-class="{'is-hidden':!showMobileNav}">
+        <input type="text" class="nly-main-nav__search" placeholder="Search username" />
+        <ul>
+            <li class="nly-main-nav__item" ng-class="{'is-selected':type === 'world'}" ng-click="changeType('world');toggleNav();">See all photos with no likes yet</li>
+            <li class="nly-main-nav__item" ng-class="{'is-selected':type === 'self'}" ng-click="changeType('self');toggleNav();">See my photos with no likes yet</li>
+            <li class="nly-main-nav__item" ng-class="{'is-selected':type === 'friends'}" ng-click="changeType('friends');toggleNav();">See friends photos with no likes yet</li>
+        </ul>
+        <div class="nly-main-nav__close" ng-click="toggleNav();"></div>
+    </div>
+    <div class="nly-main-nav__about" ng-click="toggleInfo();">?</div>
+    <div class="nly-main-nav__toggle" ng-click="toggleNav();"></div>
 </header>
 <div class="nly-main" infinite-scroll="getMedia()" infinite-scroll-distance="1" infinite-scroll-disabled="busy">
-    <div class="media-container" ng-show="type === 'friends'">
+    <div class="nly-media-container" ng-show="type === 'friends'">
         <media ng-repeat="item in view.friends track by item.id" data="item" type="{{type}}"></media>
     </div>
-    <div class="media-container" ng-show="type === 'self'">
+    <div class="nly-media-container" ng-show="type === 'self'">
         <media ng-repeat="item in view.self track by item.id" data="item" type="{{type}}"></media>
     </div>
-    <div class="media-container" ng-show="type === 'world'">
+    <div class="nly-media-container" ng-show="type === 'world'">
         <media ng-repeat="item in view.world track by item.id" data="item" type="{{type}}"></media>
+    </div>
+    <div class="nly-loading-container" ng-show="busy">
+        <div class="nly-loading-icon nly-loading-icon--1"></div>
+        <div class="nly-loading-icon nly-loading-icon--2"></div>
+        <div class="nly-loading-icon nly-loading-icon--3"></div>
     </div>
     <div class="nly-info" ng-class="{'is-hidden':!showInfo}">
         <div class="nly-info__container">
@@ -25,18 +42,14 @@
             </div>
             <div class="nly-info__sub">
                 <div class="nly-info__social">
-                    <a href="#"><img src="assets/social-facebook.png" alt=""></a>
-                    <a href="#"><img src="assets/social-twitter.png" alt=""></a>
+                    <a fb-share href="#"><img src="assets/social-facebook.png" alt=""></a>
+                    <a tw-share href="https://twitter.com/share?url=http://www.no-likes-yet.com/&text=Discover all the photos on Instagram with no likes yet." target="_blank"><img src="assets/social-twitter.png" alt=""></a>
                 </div>
                 <div class="nly-info__byline">
-                    <p>A project by <a href="#">@danielsumarna</a>, <a href="#">@talmidy</a> and <a href="#">@timhettler</a>.</p>
+                    <p>A project by <a href="http://instagram.com/danielsumarna" target="_blank">@danielsumarna</a>, <a href="http://instagram.com/talmidy" target="_blank">@talmidy</a> and&nbsp;<a href="http://instagram.com/timhettler" target="_blank">@timhettler</a>.</p>
                 </div>
             </div>
+            <div class="nly-info__close" ng-click="toggleInfo();"></div>
         </div>
-    </div>
-    <div class="nly-loading-container" ng-show="busy">
-        <div class="nly-loading-icon nly-loading-icon--1"></div>
-        <div class="nly-loading-icon nly-loading-icon--2"></div>
-        <div class="nly-loading-icon nly-loading-icon--3"></div>
     </div>
 </div>

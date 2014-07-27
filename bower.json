@@ -17,6 +17,13 @@
     "angular-route": "~1.2.11",
     "moment": "~2.5.1",
     "angular-cookie": "*",
-    "ngInfiniteScroll": "~1.1.0"
+    "ngInfiniteScroll": "~1.1.0",
+    "angular-touch": "~1.2.21"
+  },
+  "devDependencies": {
+    "fastclick": "~1.0.2"
+  },
+  "resolutions": {
+    "angular": "1.2.14"
   }
 }

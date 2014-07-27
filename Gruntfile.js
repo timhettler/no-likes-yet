@@ -16,14 +16,11 @@ module.exports = function ( grunt ) {
           beautify: true,
           relative: true,
           scripts: {
-            angular: '<%= build_dir %>/bower_components/angular/angular.js',
-            jquery: '<%= build_dir %>/bower_components/jquery/jquery.js',
-            modernizr: '<%= build_dir %>/bower_components/modernizr/modernizr.js',
-            components: [
-              '<%= build_dir %>/bower_components/*/*.js',
-              '!**/angular.js',
-              '!**/jquery.js',
-              '!**/modernizr.js'
+            modernizr: ['<%= build_dir %>/vendor/common/modernizr.js', '<%= build_dir %>/vendor/common/detectizr.js'],
+            vendor: [
+                '<%= build_dir %>/vendor/common/jquery.js',
+                '<%= build_dir %>/vendor/common/angular.js',
+                '<%= build_dir %>/vendor/*/*.js'
             ],
             app: [
               '<%= build_dir %>/js/**/*.js',
@@ -31,7 +28,7 @@ module.exports = function ( grunt ) {
             ]
           },
           styles: {
-            app: ['<%= build_dir %>/bower_components/*/*.css', '<%= build_dir %>/css/*.css']
+            app: ['<%= build_dir %>/vendor/*/*.css', '<%= build_dir %>/css/*.css']
           },
           data: {
               version: "<%= pkg.version %>",
@@ -107,7 +104,7 @@ module.exports = function ( grunt ) {
     concat: {
       compile_js: {
         src: [
-          '<%= build_dir %>/bower_components/**/*.js',
+          '<%= build_dir %>/vendor/**/*.js',
           '!**/modernizr.js',
           '<%= build_dir %>/js/**/*.js'
         ],
@@ -115,7 +112,7 @@ module.exports = function ( grunt ) {
       },
       compile_css: {
         src: [
-            '<%= build_dir %>/bower_components/**/*.css',
+            '<%= build_dir %>/vendor/**/*.css',
             '<%= build_dir %>/css/app.css'
         ],
         dest: '<%= compile_dir %>/css/<%= pkg.name %>.js'
@@ -257,6 +254,16 @@ module.exports = function ( grunt ) {
     // },
 
     copy: {
+        build_vendor: {
+            files: [
+                {
+                    src: '<%= vendor_files.common %>',
+                    dest: '<%= build_dir %>/vendor/common',
+                    expand: true,
+                    flatten: true
+                },
+            ]
+        },
       build_assets: {
         files: [
           {
@@ -330,11 +337,17 @@ module.exports = function ( grunt ) {
       }
     },
 
+
+
+    // Grunt Modernizr
+    // Sifts through your project files, gathers up your references to Modernizr tests and outputs a lean, mean Modernizr machine.
+    // https://github.com/Modernizr/grunt-modernizr
     modernizr: {
         dist: {
-            devFile: '<%= build_dir %>/bower_components/modernizr/modernizr.js',
+            devFile: 'modernizr/modernizr.js',
             outputFile: '<%= compile_dir %>/js/modernizr.js',
             extra : {
+                // Only need shiv if we've supporting IE < 9
                 "shiv" : false,
             },
             extensibility : {
@@ -345,22 +358,11 @@ module.exports = function ( grunt ) {
                 "testallprops" : true,
                 "hasevents" : false,
                 "prefixes" : false,
-                "domprefixes" : true
+                "domprefixes" : false
             },
-            parseFiles: false,
+            parseFiles: true,
             files: {
                 src: ['<%= build_dir %>/js/**/*.js', '<%= build_dir %>/css/**/*.css']
-            }
-        }
-    },
-
-    bower: {
-        install: {
-            options: {
-                targetDir: '<%= build_dir %>/bower_components',
-                layout: 'byComponent',
-                install: false,
-                verbose: true
             }
         }
     }
@@ -374,8 +376,8 @@ module.exports = function ( grunt ) {
     grunt.registerTask( 'default', [ 'build', 'compile' ] );
 
     grunt.registerTask('build', [
-        'jshint', 'clean', 'html2js', 'bower',
-        'copy:build_assets', 'copy:build_data', 'copy:build_appjs',
+        'jshint', 'clean', 'html2js',
+        'copy:build_assets', 'copy:build_data', 'copy:build_appjs', 'copy:build_vendor',
         'copy:build_partials',
         'compass:dev', 'autoprefixer:build', 'htmlbuild:build'
     ]);

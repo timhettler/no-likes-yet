@@ -6,6 +6,18 @@ $color--orange: #f9651b;
 
 $base-font-family: 'Proxima Nova', 'Helvetica Neue', Helvetica, sans-serif;
 
+@mixin mobile() {
+    @media (max-width: 600px) {
+        @content;
+    }
+}
+
+@mixin desktop() {
+    @media (min-width: 601px) {
+        @content;
+    }
+}
+
 @mixin ellipsis() {
     overflow: hidden;
     text-overflow: ellipsis;

@@ -10,6 +10,7 @@
 @import "_splash.scss";
 @import "_loading.scss";
 @import "_info.scss";
+@import "_header.scss";
 
 body {
     font-family: $base-font-family;
@@ -23,89 +24,10 @@ img {
     cursor: pointer;
 }
 
-.nly-header {
-    align-items: flex-start;
-    background-color: #fff;
-    border-bottom: 1px solid $color--light-gray;
-    box-sizing: border-box;
-    display: flex;
-    justify-content: space-between;
-    left: 0;
-    padding: 30px 40px 0;
-    position: fixed;
-    top: 0;
-    width: 100%;
-    z-index: 1;
-}
-
-.nly-logo {
-    color: $color--orange;
-    font-weight: bold;
-    font-size: 16px;
-
-    &:before {
-        background-image: image-url('heart-large.png');
-        background-size: contain;
-        background-repeat: no-repeat;
-        content: '';
-        display: inline-block;
-        vertical-align: middle;
-        width: 20px;
-        height: 20px;
-        margin-right: 13px;
-    }
-}
-
-.nly-main-nav {
-    color: $color--gray;
-    display: flex;
-    text-transform: uppercase;
-    font-size: 13px;
-
-    li {
-        @include transition(border-color 250ms);
-        border-bottom: 5px solid transparent;
-        color: $color--gray;
-        margin-left: 34px;
-        padding-bottom: 30px;
-        position: relative;
-        line-height: 1;
-
-        &.is-selected {
-            border-bottom-color: $color--light-gray;
-        }
-
-        &:before {
-            background-color: $color--light-gray;
-            border-radius: 100%;
-            display: inline-block;
-            vertical-align: middle;
-            content: '';
-            width: 2px;
-            height: 2px;
-            margin-right: 15px;
-            position: absolute;
-            right: 100%;
-            top: 0.25em;
-            margin-top: -1px;
-        }
-
-        &:first-child {
-            margin-left: 0;
-
-            &:before {
-                content: none;
-            }
-        }
-    }
-}
-
-.nly-about-icon {
-    color: $color--orange;
-    cursor: pointer;
-    font-size: 24px;
-}
-
 .nly-main {
     padding-top: 79px;
+
+    @include mobile () {
+        padding-top: 50px;
+    }
 }

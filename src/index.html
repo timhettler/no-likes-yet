@@ -15,6 +15,14 @@
     <meta name="twitter:description" content="<%= description %>">
     <meta name="twitter:image:src" content="<%= image %>">
     <meta name="twitter:domain" content="<%= url %>">
+    <link href="assets/favicon.png" rel="shortcut icon" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <link rel="apple-touch-icon" href="touch-icon-iphone.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="touch-icon-ipad.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="touch-icon-iphone-retina.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="touch-icon-ipad-retina.png">
+
     <!-- /build -->
     <!-- compile:style app -->
         <!-- build:style app --><!-- /build -->
@@ -26,10 +34,25 @@
 <body ng-app="app" check-user>
     <ng-view></ng-view>
     <!-- compile:script app -->
-    <!-- build:script optional jquery --><!-- /build -->
-    <!-- build:script optional angular --><!-- /build -->
-    <!-- build:script optional components --><!-- /build -->
+    <!-- build:script optional vendor --><!-- /build -->
     <!-- build:script app --><!-- /build -->
     <!-- /compile -->
+    <script>
+  window.fbAsyncInit = function() {
+        FB.init({
+          appId      : '675619645861071',
+          xfbml      : true,
+          version    : 'v2.0'
+        });
+      };
+
+      (function(d, s, id){
+         var js, fjs = d.getElementsByTagName(s)[0];
+         if (d.getElementById(id)) {return;}
+         js = d.createElement(s); js.id = id;
+         js.src = "//connect.facebook.net/en_US/sdk.js";
+         fjs.parentNode.insertBefore(js, fjs);
+       }(document, 'script', 'facebook-jssdk'));
+    </script>
 </body>
 </html>
