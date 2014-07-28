@@ -110,9 +110,5 @@
         right: 15px;
         top: 15px;
         width: 16px;
-
-        @include desktop () {
-            display: none;
-        }
     }
 

@@ -7,9 +7,10 @@ app.config(['$routeProvider', function($routeProvider) {
             controller: 'SplashCtrl',
             requiresAuth: false
         })
-        .when('/media/:type', {
+        .when('/media/', {
             templateUrl: 'partials/media.html',
             controller: 'MediaCtrl',
+            reloadOnSearch: false,
             requiresAuth: true
         })
         .when('/access_token=:access_token', {

@@ -46,3 +46,13 @@ $base-font-family: 'Proxima Nova', 'Helvetica Neue', Helvetica, sans-serif;
     outline: none;
     padding: 0;
 }
+
+%not-a-input {
+    background-color: transparent;
+    border: none;
+    color: inherit;
+    font-size: inherit;
+    font-family: inherit;
+    outline: none;
+    padding: 0;
+}

@@ -6,7 +6,7 @@ angular.module('app')
                 if (instagramService.hasAccessToken()) {
                     $log.debug('has access token');
                     if (currRoute.templateUrl === "partials/splash.html") {
-                        $location.url('/media/world', true);
+                        $location.url('/media/?type=world', true);
                         return;
                     }
                 }
@@ -15,7 +15,7 @@ angular.module('app')
                     $log.debug('cookie found', ipCookie('access_token'));
                     instagramService.setAccessToken(ipCookie('access_token'));
                     if (currRoute.templateUrl === "partials/splash.html") {
-                        $location.url('/media/world', true);
+                        $location.url('/media/?type=world', true);
                         return;
                     }
                     return;

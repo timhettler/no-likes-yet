@@ -11,9 +11,15 @@
 @import "_loading.scss";
 @import "_info.scss";
 @import "_header.scss";
+@import "_error.scss";
 
 body {
     font-family: $base-font-family;
+    padding-top: 79px;
+
+    @include mobile () {
+        padding-top: 50px;
+    }
 }
 
 img {
@@ -22,12 +28,4 @@ img {
 
 [ng-click] {
     cursor: pointer;
-}
-
-.nly-main {
-    padding-top: 79px;
-
-    @include mobile () {
-        padding-top: 50px;
-    }
 }

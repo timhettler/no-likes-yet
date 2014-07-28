@@ -23,26 +23,100 @@ var MediaCtrl = app.controller('MediaCtrl', function ($scope, $routeParams, $loc
             [41.512995, 14.063514],
             [40.65,-73.95],
             [33.8575,-117.87556],
-            [39.1910983,-106.8175387]
+            [39.1910983,-106.8175387],
+            [42.3584308,-71.0597732],
+            [41.850033,-87.6500523],
+            [34.0522342,-118.2436849],
+            [37.7749295,-122.4194155],
+            [35.6894875,139.6917064],
+            [37.566535,126.9779692],
+            [59.939039,30.315785],
+            [43.234782,-76.224604],
+            [43.036227,-76.136456],
+            [13.7234186,100.4762319],
+            [39.904667,116.408198],
+            [4.609866,-74.08205],
+            [30.064742,31.249509],
+            [28.635308,77.22496],
+            [23.709921,90.407143],
+            [23.129075,113.264423],
+            [41.012379,28.975926],
+            [-6.211544,106.845172],
+            [24.893379,67.028061],
+            [22.572646,88.363895],
+            [6.441158,3.417977],
+            [51.5001524,-0.1262362],
+            [14.6010326,120.9761599],
+            [19.4270499,-99.1275711],
+            [55.755786,37.617633],
+            [19.017656,72.856178],
+            [34.6937378,135.5021651],
+            [-22.9035393,-43.2095869],
+            [-23.5489433,-46.6388182],
+            [31.230708,121.472916],
+            [39.120876,117.21503],
+            [43.670233,-79.386755],
+            [45.545447,-73.639076],
+            [51.055149,-114.062438],
+
         ],
         worldToken;
 
-    $scope.toggleInfo = function () {
-        $scope.showInfo = !$scope.showInfo;
+    $scope.toggleView = function (string, boolean) {
+        if(!string) {return;}
+        $scope[string] = (boolean !== undefined) ? boolean : !$scope[string];
     };
 
-    $scope.toggleNav = function () {
-        $scope.showMobileNav = !$scope.showMobileNav;
-    };
+    $scope.setType = function (type) {
+        if($scope.type === type) { return; }
 
-    $scope.changeType = function (type) {
+        $scope.toggleView('showError', false);
+        $scope.toggleView('showInfo', false);
+
         $scope.type = type;
 
-        if ($scope.view[type].length === 0) {
+        $location.search('type', type);
+
+        if ($scope.view[type].length === 0 && type !== 'search') {
             $scope.getMedia();
+            $location.search('user', null);
+        } else if (type === 'search') {
+            if ($scope.searchInput) {
+                $location.search('user', $scope.searchInput);
+            } else if ( $location.search().user ) {
+                $scope.searchInput = $location.search().user;
+                $scope.searchForUser();
+            }
         }
 
-        //$location.path('/media/'+type);
+        return $scope.type;
+    };
+
+    $scope.searchForUser = function () {
+        if (!$scope.searchInput) { return; }
+        $scope.busy = true;
+        $scope.view.search = [];
+        $scope.toggleView('showError', false);
+
+        instagramService.getUserData($scope.searchInput)
+            .then(function (user) {
+                $scope.busy = false;
+                $location.search('user', user.username);
+                $scope.searchUser = user;
+                if (!$scope.media[user.id]) {
+                    initUserMedia(user.id);
+                }
+                $scope.getMedia();
+            }, function (result) {
+                $scope.busy = false;
+                setErrorMessage('Stop making things up.', 'That user couldn\'t be found. Try searching for someone else.');
+                $scope.toggleView('showError', true);
+            });
+    };
+
+    var setErrorMessage = function (headline, copy) {
+        $scope.errorHeadline = headline;
+        $scope.errorCopy = copy;
     };
 
     var getRandomToken = function () {
@@ -62,7 +136,7 @@ var MediaCtrl = app.controller('MediaCtrl', function ($scope, $routeParams, $loc
 
                 $scope.busy = false;
 
-                $scope.getMedia();
+                $scope.setType($routeParams.type || 'world');
             },
             function (meta) {
                 console.log('access token invalid');
@@ -117,6 +191,8 @@ var MediaCtrl = app.controller('MediaCtrl', function ($scope, $routeParams, $loc
 
         if ($scope.media[user.id].pagination !== false) {
             getData();
+        } else {
+            deferred.reject();
         }
 
         return deferred.promise;
@@ -132,8 +208,11 @@ var MediaCtrl = app.controller('MediaCtrl', function ($scope, $routeParams, $loc
                         deferred.resolve(result);
                     });
             };
+
         if ($scope.media[userId].pagination !== false) {
             getData();
+        } else {
+            deferred.reject();
         }
 
         return deferred.promise;
@@ -159,6 +238,7 @@ var MediaCtrl = app.controller('MediaCtrl', function ($scope, $routeParams, $loc
                         }
                     },
                     function () {
+                        falseCount++;
                         $scope.followingToken = ($scope.followingToken + 1 )% $scope.following.length;
                         if (falseCount < $scope.following.length) {
                             getNextPage();
@@ -232,10 +312,7 @@ var MediaCtrl = app.controller('MediaCtrl', function ($scope, $routeParams, $loc
                     fisherYates(following); //randmize
                     $scope.following = following;
                     $scope.following.forEach(function (user) {
-                        $scope.media[user.id] = {
-                            pagination: {},
-                            data: []
-                        };
+                        initUserMedia(user.id);
                     });
 
                     deferred.resolve();
@@ -245,15 +322,25 @@ var MediaCtrl = app.controller('MediaCtrl', function ($scope, $routeParams, $loc
         return deferred.promise;
     };
 
+    var initUserMedia = function (userId) {
+        $scope.media[userId] = {
+            pagination: {},
+            data: []
+        };
+    };
+
     $scope.getMedia = function () {
         if($scope.busy) {return;}
 
-        $scope.busy = true;
-
         if ($scope.type === 'self') {
+            $scope.busy = true;
             $scope.getUserMedia($scope.user)
                 .then(function (media) {
                     $scope.view.self = $scope.view.self.concat(media);
+                    $scope.busy = false;
+                },
+                function () {
+                    console.log('all media found for self');
                     $scope.busy = false;
                 });
         } else if ($scope.type === 'friends') {
@@ -288,6 +375,24 @@ var MediaCtrl = app.controller('MediaCtrl', function ($scope, $routeParams, $loc
                     console.log('world page', media);
                     $scope.busy = false;
                 });
+        } else if ( $scope.type === 'search' ) {
+            if (!$scope.searchUser) { return; }
+            $scope.busy = true;
+
+            if ($scope.media[$scope.searchUser.id].data.length > 0 && $scope.view.search.length === 0) {
+                $scope.view.search = $scope.media[$scope.searchUser.id].data;
+            }
+
+            $scope.getUserMedia($scope.searchUser)
+                .then(function (media) {
+                    $scope.view.search = $scope.view.search.concat(media);
+                    console.log('search page', media);
+                    $scope.busy = false;
+                },
+                function () {
+                    console.log('all media found for '+$scope.searchUser.username);
+                    $scope.busy = false;
+                });
         }
     };
 
@@ -301,11 +406,12 @@ var MediaCtrl = app.controller('MediaCtrl', function ($scope, $routeParams, $loc
         $scope.followingMedia = [];
         $scope.worldMedia = [];
         $scope.media = {};
-        $scope.type = $routeParams.type;
+        // $scope.type = $routeParams.type;
         $scope.view = {
             world: [],
             friends: [],
-            self: []
+            self: [],
+            search: []
         };
 
         getUserData();

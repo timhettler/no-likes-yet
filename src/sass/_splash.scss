@@ -1,6 +1,8 @@
 .nly-splash {
     @extend %fullscreen;
+    left: 0;
     position: fixed;
+    top: 0;
 }
 
     .nly-splash__bg {

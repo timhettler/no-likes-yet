@@ -9,7 +9,7 @@ var AuthCtrl = app.controller('AuthCtrl', function ($scope, $location, $routePar
             .then(function (user) {
                 ipCookie('self', user , { expires: 30 });
                 $scope.hasAccessToken = true;
-                $location.replace().url('/media/self');
+                $location.replace().url('/media/?type=world');
             },
             function (meta) {
                 ipCookie.remove('access_token');

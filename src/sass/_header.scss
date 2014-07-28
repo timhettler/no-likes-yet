@@ -62,7 +62,8 @@
         display: flex;
         left: 50%;
         transform: translateX(-50%);
-        width: 400px;
+        width: 600px;
+        justify-content: center;
 
         > ul {
             display: flex;
@@ -71,7 +72,7 @@
 
     @include mobile() {
         left: 0;
-        top: 0;
+        top: 100%;
         width: 100%;
     }
 
@@ -91,15 +92,20 @@
     .nly-main-nav__item {
         @include desktop () {
         @include transition(border-color 250ms);
-            border-bottom: 5px solid transparent;
+            border-bottom: 0 solid $color--light-gray;
             color: $color--gray;
+            letter-spacing: 2px;
             margin-left: 34px;
             padding-bottom: 30px;
             position: relative;
             line-height: 1;
+            transition: border 250ms, padding 250ms, color 250ms;
 
+            .no-touch &:hover,
             &.is-selected {
-                border-bottom-color: $color--light-gray;
+                color: #000;
+                padding-bottom: 25px;
+                border-bottom: 5px solid $color--light-gray;
             }
 
             &:before {
@@ -140,10 +146,8 @@
     }
 
     .nly-main-nav__search {
-        border: none;
-        background-color: #fff;
+        @extend %not-a-input;
         display: block;
-        outline: none;
         padding: 15px;
         font-family: $base-font-family;
         font-size: 16px;

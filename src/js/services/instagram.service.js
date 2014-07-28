@@ -58,7 +58,15 @@ app.factory('instagramService', function ($http, $q, instagramApiData) {
     };
 
     publicMethods.getUserData = function (username) {
-        return users[username];
+        var deferred = $q.defer();
+
+        if(users[username]) {
+            deferred.resolve(users[username]);
+        } else {
+            return searchForUser(username);
+        }
+
+        return deferred.promise;
     };
 
     var setUserData = function (userObj) {
@@ -117,18 +125,21 @@ app.factory('instagramService', function ($http, $q, instagramApiData) {
         return deferred.promise;
     };
 
-    publicMethods.searchForUser = function (username) {
+    var searchForUser = function (username) {
         var deferred = $q.defer(),
             url = configureUrl('https://api.instagram.com/v1/users/search/',{q:username});
 
         getData(url)
             .then(function (users) {
-                if (users.data.length !== 0) {
-                    setUserData(users.data[0]);
-                    deferred.resolve(users.data[0]);
-                } else {
-                    deferred.reject(users);
-                }
+                users.data.forEach(function (user) {
+                    if ( user.username === username ) {
+                        setUserData(user);
+                        deferred.resolve(user);
+                        return;
+                    }
+                });
+
+                deferred.reject(users);
             });
 
         return deferred.promise;

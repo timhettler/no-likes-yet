@@ -2,23 +2,28 @@
     <h1 class="nly-logo">No Likes Yet.</h1>
     <div class="nly-main-nav nly-main-nav--desktop">
         <ul>
-            <li class="nly-main-nav__item" ng-class="{'is-selected':type === 'world'}" ng-click="changeType('world')">The World</li>
-            <li class="nly-main-nav__item" ng-class="{'is-selected':type === 'self'}" ng-click="changeType('self')">My Photos</li>
-            <li class="nly-main-nav__item" ng-class="{'is-selected':type === 'friends'}" ng-click="changeType('friends')">My Friends Photos</li>
+            <li class="nly-main-nav__item" ng-class="{'is-selected':type === 'world'}" ng-click="setType('world')">The World</li>
+            <li class="nly-main-nav__item" ng-class="{'is-selected':type === 'friends'}" ng-click="setType('friends')">My Friends' Photos</li>
+            <li class="nly-main-nav__item" ng-class="{'is-selected':type === 'self'}" ng-click="setType('self')">My Photos</li>
+            <li class="nly-main-nav__item" ng-class="{'is-selected':type === 'search'}" ng-click="setType('search')">Find User</li>
         </ul>
     </div>
     <div class="nly-main-nav nly-main-nav--mobile" ng-class="{'is-hidden':!showMobileNav}">
-        <input type="text" class="nly-main-nav__search" placeholder="Search username" />
+        <!-- <input type="text" class="nly-main-nav__search" placeholder="Search username" /> -->
         <ul>
-            <li class="nly-main-nav__item" ng-class="{'is-selected':type === 'world'}" ng-click="changeType('world');toggleNav();">See all photos with no likes yet</li>
-            <li class="nly-main-nav__item" ng-class="{'is-selected':type === 'self'}" ng-click="changeType('self');toggleNav();">See my photos with no likes yet</li>
-            <li class="nly-main-nav__item" ng-class="{'is-selected':type === 'friends'}" ng-click="changeType('friends');toggleNav();">See friends photos with no likes yet</li>
+            <li class="nly-main-nav__item" ng-class="{'is-selected':type === 'world'}" ng-click="setType('world');toggleView('showMobileNav', false);">See all photos with no likes yet</li>
+            <li class="nly-main-nav__item" ng-class="{'is-selected':type === 'friends'}" ng-click="setType('friends');toggleView('showMobileNav', false);">See friends photos with no likes yet</li>
+            <li class="nly-main-nav__item" ng-class="{'is-selected':type === 'self'}" ng-click="setType('self');toggleView('showMobileNav', false);">See my photos with no likes yet</li>
+            <li class="nly-main-nav__item" ng-class="{'is-selected':type === 'search'}" ng-click="setType('search');toggleView('showMobileNav', false);">Search by username</li>
         </ul>
-        <div class="nly-main-nav__close" ng-click="toggleNav();"></div>
+        <!-- <div class="nly-main-nav__close" ng-click="toggleView('showMobileNav', false);"></div> -->
     </div>
-    <div class="nly-main-nav__about" ng-click="toggleInfo();">?</div>
-    <div class="nly-main-nav__toggle" ng-click="toggleNav();"></div>
+    <div class="nly-main-nav__about" ng-click="toggleView('showInfo');">?</div>
+    <div class="nly-main-nav__toggle" ng-click="toggleView('showMobileNav');"></div>
 </header>
+<form name="searchForm" ng-submit="searchForUser();" class="nly-search" ng-class="{'is-hidden':type !== 'search'}">
+    <div class="nly-search__input-container"><input type="text" class="nly-search__input" ng-model="searchInput" placeholder="username + enter" required /></div>
+</form>
 <div class="nly-main" infinite-scroll="getMedia()" infinite-scroll-distance="1" infinite-scroll-disabled="busy">
     <div class="nly-media-container" ng-show="type === 'friends'">
         <media ng-repeat="item in view.friends track by item.id" data="item" type="{{type}}"></media>
@@ -29,27 +34,36 @@
     <div class="nly-media-container" ng-show="type === 'world'">
         <media ng-repeat="item in view.world track by item.id" data="item" type="{{type}}"></media>
     </div>
-    <div class="nly-loading-container" ng-show="busy">
+    <div class="nly-media-container" ng-show="type === 'search'">
+        <media ng-repeat="item in view.search track by item.id" data="item" type="{{type}}"></media>
+    </div>
+    <div class="nly-loading-container" ng-show="busy === true">
         <div class="nly-loading-icon nly-loading-icon--1"></div>
         <div class="nly-loading-icon nly-loading-icon--2"></div>
         <div class="nly-loading-icon nly-loading-icon--3"></div>
     </div>
-    <div class="nly-info" ng-class="{'is-hidden':!showInfo}">
-        <div class="nly-info__container">
-            <div class="nly-info__main">
-                <div class="nly-info__icon"><img src="assets/nly.png" alt="No Likes Yet"></div>
-                <p>Is that floating icon freaking you out? Well, that’s extactly why we made this website. Find all the photos of yourself, your friends and the world that have no likes yet, and decide if they deserve to remain that way.</p>
-            </div>
-            <div class="nly-info__sub">
-                <div class="nly-info__social">
-                    <a fb-share href="#"><img src="assets/social-facebook.png" alt=""></a>
-                    <a tw-share href="https://twitter.com/share?url=http://www.no-likes-yet.com/&text=Discover all the photos on Instagram with no likes yet." target="_blank"><img src="assets/social-twitter.png" alt=""></a>
-                </div>
-                <div class="nly-info__byline">
-                    <p>A project by <a href="http://instagram.com/danielsumarna" target="_blank">@danielsumarna</a>, <a href="http://instagram.com/talmidy" target="_blank">@talmidy</a> and&nbsp;<a href="http://instagram.com/timhettler" target="_blank">@timhettler</a>.</p>
-                </div>
-            </div>
-            <div class="nly-info__close" ng-click="toggleInfo();"></div>
+</div>
+<div class="nly-info" ng-class="{'is-hidden':!showInfo}">
+    <div class="nly-info__container">
+        <div class="nly-info__main">
+            <div class="nly-info__icon"><img src="assets/nly.png" alt="No Likes Yet"></div>
+            <p>Is that floating icon freaking you out? Well, that’s extactly why we made this website. Find all the photos of yourself, your friends and the world that have no likes yet, and decide if they deserve to remain that way.</p>
         </div>
+        <div class="nly-info__sub">
+            <div class="nly-info__social">
+                <a fb-share href="#"><img src="assets/social-facebook.png" alt=""></a>
+                <a tw-share href="https://twitter.com/share?url=http://www.no-likes-yet.com/&text=Discover all the photos on Instagram with no likes yet." target="_blank"><img src="assets/social-twitter.png" alt=""></a>
+            </div>
+            <div class="nly-info__byline">
+                <p>A project by <a href="http://instagram.com/danielsumarna" target="_blank">@danielsumarna</a>, <a href="http://instagram.com/talmidy" target="_blank">@talmidy</a> and&nbsp;<a href="http://instagram.com/timhettler" target="_blank">@timhettler</a>.</p>
+            </div>
+        </div>
+        <div class="nly-info__close" ng-click="toggleView('showInfo', false);"></div>
+    </div>
+</div>
+<div class="nly-error" ng-class="{'is-hidden':!showError}">
+    <div class="nly-error__container">
+        <div class="nly-error__headline" ng-bind="errorHeadline"></div>
+        <p class="nly-error__copy" ng-bind="errorCopy"></p>
     </div>
 </div>
