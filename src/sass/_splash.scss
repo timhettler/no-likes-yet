@@ -20,26 +20,26 @@
     }
 
         .nly-splash__icon {
-            margin: 0 auto 50px;
-            width: 162px;
+            margin: 0 auto 25px;
+            width: 80px;
 
             @include mobile() {
-                margin-bottom: 25px;
-                width: 81px;
+                margin-bottom: 12px;
+                width: 40px;
             }
         }
 
         .nly-splash__headline {
             color: $color--light;
-            font-size: 50px;
-            margin-bottom: 50px;
+            font-size: 25px;
+            margin-bottom: 25px;
 
             @include mobile() {
-                font-size: 22px;
+                font-size: 11px;
             }
         }
 
         .nly-splash__button {
             margin: 0 auto;
-            max-width: 472px;
+            max-width: 236px;
         }

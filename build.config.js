@@ -4,7 +4,7 @@ module.exports = {
     compile_dir: 'bin',
 
     meta: {
-        title: 'No Likes Yet',
+        title: 'No likes yet.',
         description: 'Discover all the photos on Instagram with no likes yet.',
         viewport: 'width=device-width, initial-scale=1, user-scalable=no, minimal-ui',
         url: '',

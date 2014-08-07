@@ -1,8 +1,10 @@
 <div class="media" ng-class="{'can-like': type !== 'self'}">
-    <div class="media__overlay"><img src="assets/heart-large.png"></div>
-    <div class="media__content"><img ng-src="{{data.images.standard_resolution.url}}" alt=""></div>
+    <div class="media__content">
+        <img ng-src="{{data.images.standard_resolution.url}}" alt="">
+        <div class="media__overlay"><img src="assets/heart-large.png"></div>
+    </div>
     <div class="media__meta-data">
-        <div class="media__user">{{data.user.username}}</div>
-        <div class="media__timestamp"><moment-from time="data.created_time"></moment-from></div>
+        <div class="media__user"><a ng-href="{{'http://www.instagram.com/'+data.user.username}}" target="_blank">{{data.user.username}}</a></div>
+        <div class="media__timestamp"><a ng-href="{{data.link}}" target="_blank"><moment-from time="data.created_time"></moment-from></a></div>
     </div>
 </div>

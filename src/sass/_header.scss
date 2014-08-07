@@ -10,7 +10,7 @@
     width: 100%;
     z-index: 2;
 
-    @include mobile () {
+    @include tablet() {
         height: 50px;
     }
 }
@@ -23,13 +23,13 @@
     top: 50%;
     z-index: 1;
 
-    @include mobile () {
+    @include tablet() {
         left: 50%;
         transform: translate(-50%,-50%);
     }
 
-    @include desktop () {
-        left: 15px;
+    @include desktop() {
+        left: 40px;
         transform: translateY(-50%);
     }
 
@@ -70,14 +70,14 @@
         }
     }
 
-    @include mobile() {
+    @include tablet() {
         left: 0;
         top: 100%;
         width: 100%;
     }
 
     &--desktop {
-        @include mobile() {
+        @include tablet() {
             display: none !important;
         }
     }
@@ -132,7 +132,7 @@
             }
         }
 
-        @include mobile() {
+        @include tablet() {
             background-color: $color--orange;
             border-bottom: 2px solid #fff;
             color: #fff;
@@ -183,7 +183,12 @@
         cursor: pointer;
         font-size: 24px;
         position: absolute;
-        right: 15px;
+        right: 40px;
         top: 50%;
         transform: translateY(-50%);
+
+        @include tablet() {
+            color: $color--gray;
+            right: 20px;
+        }
     }

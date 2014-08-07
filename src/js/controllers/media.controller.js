@@ -58,7 +58,7 @@ var MediaCtrl = app.controller('MediaCtrl', function ($scope, $routeParams, $loc
             [43.670233,-79.386755],
             [45.545447,-73.639076],
             [51.055149,-114.062438],
-
+            [51.770615,-1.25507]
         ],
         worldToken;
 
@@ -94,13 +94,13 @@ var MediaCtrl = app.controller('MediaCtrl', function ($scope, $routeParams, $loc
 
     $scope.searchForUser = function () {
         if (!$scope.searchInput) { return; }
-        $scope.busy = true;
+        $scope.busy['search'] = true;
         $scope.view.search = [];
         $scope.toggleView('showError', false);
 
         instagramService.getUserData($scope.searchInput)
             .then(function (user) {
-                $scope.busy = false;
+                $scope.busy['search'] = false;
                 $location.search('user', user.username);
                 $scope.searchUser = user;
                 if (!$scope.media[user.id]) {
@@ -108,7 +108,7 @@ var MediaCtrl = app.controller('MediaCtrl', function ($scope, $routeParams, $loc
                 }
                 $scope.getMedia();
             }, function (result) {
-                $scope.busy = false;
+                $scope.busy['search'] = false;
                 setErrorMessage('Stop making things up.', 'That user couldn\'t be found. Try searching for someone else.');
                 $scope.toggleView('showError', true);
             });
@@ -129,12 +129,7 @@ var MediaCtrl = app.controller('MediaCtrl', function ($scope, $routeParams, $loc
                 console.log('got user data');
                 $scope.user = user;
 
-                $scope.media[$scope.user.id] = {
-                    pagination: {},
-                    data: []
-                };
-
-                $scope.busy = false;
+                initUserMedia($scope.user.id);
 
                 $scope.setType($routeParams.type || 'world');
             },
@@ -330,21 +325,21 @@ var MediaCtrl = app.controller('MediaCtrl', function ($scope, $routeParams, $loc
     };
 
     $scope.getMedia = function () {
-        if($scope.busy) {return;}
+        if($scope.busy[$scope.type]) {return;}
 
         if ($scope.type === 'self') {
-            $scope.busy = true;
+            $scope.busy['self'] = true;
             $scope.getUserMedia($scope.user)
                 .then(function (media) {
                     $scope.view.self = $scope.view.self.concat(media);
-                    $scope.busy = false;
+                    $scope.busy['self'] = false;
                 },
                 function () {
                     console.log('all media found for self');
-                    $scope.busy = false;
+                    $scope.busy['self'] = false;
                 });
         } else if ($scope.type === 'friends') {
-            $scope.busy = true;
+            $scope.busy['friends'] = true;
 
             getFollowingList()
                 .then(function () {
@@ -352,13 +347,13 @@ var MediaCtrl = app.controller('MediaCtrl', function ($scope, $routeParams, $loc
                         .then(function (media) {
                             $scope.view.friends = $scope.view.friends.concat(media);
                             console.log('follower page', media);
-                            $scope.busy = false;
+                            $scope.busy['friends'] = false;
                         });
                 });
 
 
         } else if ( $scope.type === 'world' ) {
-            $scope.busy = true;
+            $scope.busy['world'] = true;
 
             if ($scope.worldMedia.length === 0) {
                 worldCoordinates.forEach(function (v,i) {
@@ -373,11 +368,11 @@ var MediaCtrl = app.controller('MediaCtrl', function ($scope, $routeParams, $loc
                 .then(function (media) {
                     $scope.view.world = $scope.view.world.concat(media);
                     console.log('world page', media);
-                    $scope.busy = false;
+                    $scope.busy['world'] = false;
                 });
         } else if ( $scope.type === 'search' ) {
             if (!$scope.searchUser) { return; }
-            $scope.busy = true;
+            $scope.busy['search'] = true;
 
             if ($scope.media[$scope.searchUser.id].data.length > 0 && $scope.view.search.length === 0) {
                 $scope.view.search = $scope.media[$scope.searchUser.id].data;
@@ -387,18 +382,23 @@ var MediaCtrl = app.controller('MediaCtrl', function ($scope, $routeParams, $loc
                 .then(function (media) {
                     $scope.view.search = $scope.view.search.concat(media);
                     console.log('search page', media);
-                    $scope.busy = false;
+                    $scope.busy['search'] = false;
                 },
                 function () {
                     console.log('all media found for '+$scope.searchUser.username);
-                    $scope.busy = false;
+                    $scope.busy['search'] = false;
                 });
         }
     };
 
 
     var init = function () {
-        $scope.busy = true;
+        $scope.busy = {
+            world: false,
+            friends: false,
+            self: false,
+            search: false
+        };
         $scope.showInfo = false;
         $scope.showMobileNav = false;
         $scope.followingToken = 0;
@@ -406,7 +406,6 @@ var MediaCtrl = app.controller('MediaCtrl', function ($scope, $routeParams, $loc
         $scope.followingMedia = [];
         $scope.worldMedia = [];
         $scope.media = {};
-        // $scope.type = $routeParams.type;
         $scope.view = {
             world: [],
             friends: [],

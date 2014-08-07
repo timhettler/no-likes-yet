@@ -1,5 +1,5 @@
 <header class="nly-header">
-    <h1 class="nly-logo">No Likes Yet.</h1>
+    <h1 class="nly-logo">No likes yet.</h1>
     <div class="nly-main-nav nly-main-nav--desktop">
         <ul>
             <li class="nly-main-nav__item" ng-class="{'is-selected':type === 'world'}" ng-click="setType('world')">The World</li>
@@ -24,29 +24,28 @@
 <form name="searchForm" ng-submit="searchForUser();" class="nly-search" ng-class="{'is-hidden':type !== 'search'}">
     <div class="nly-search__input-container"><input type="text" class="nly-search__input" ng-model="searchInput" placeholder="username + enter" required /></div>
 </form>
-<div class="nly-main" infinite-scroll="getMedia()" infinite-scroll-distance="1" infinite-scroll-disabled="busy">
-    <div class="nly-media-container" ng-show="type === 'friends'">
-        <media ng-repeat="item in view.friends track by item.id" data="item" type="{{type}}"></media>
-    </div>
-    <div class="nly-media-container" ng-show="type === 'self'">
-        <media ng-repeat="item in view.self track by item.id" data="item" type="{{type}}"></media>
-    </div>
-    <div class="nly-media-container" ng-show="type === 'world'">
+<div class="nly-main" infinite-scroll="getMedia()" infinite-scroll-distance="1" infinite-scroll-disabled="busy[type]">
+    <div class="nly-media-container nly-media-container--world" ng-show="type === 'world'">
         <media ng-repeat="item in view.world track by item.id" data="item" type="{{type}}"></media>
+        <loading type="world" size="{{view.world.length}}"></loading>
     </div>
-    <div class="nly-media-container" ng-show="type === 'search'">
+    <div class="nly-media-container nly-media-container--friends" ng-show="type === 'friends'">
+        <media ng-repeat="item in view.friends track by item.id" data="item" type="{{type}}"></media>
+        <loading type="friends" size="{{view.friends.length}}"></loading>
+    </div>
+    <div class="nly-media-container nly-media-container--self" ng-show="type === 'self'">
+        <media ng-repeat="item in view.self track by item.id" data="item" type="{{type}}"></media>
+        <loading type="self" size="{{view.self.length}}"></loading>
+    </div>
+    <div class="nly-media-container nly-media-container--search" ng-show="type === 'search'">
         <media ng-repeat="item in view.search track by item.id" data="item" type="{{type}}"></media>
-    </div>
-    <div class="nly-loading-container" ng-show="busy === true">
-        <div class="nly-loading-icon nly-loading-icon--1"></div>
-        <div class="nly-loading-icon nly-loading-icon--2"></div>
-        <div class="nly-loading-icon nly-loading-icon--3"></div>
+        <loading type="search" size="{{view.search.length}}"></loading>
     </div>
 </div>
 <div class="nly-info" ng-class="{'is-hidden':!showInfo}">
     <div class="nly-info__container">
         <div class="nly-info__main">
-            <div class="nly-info__icon"><img src="assets/nly.png" alt="No Likes Yet"></div>
+            <div class="nly-info__icon"><img src="assets/nly.png" alt="No likes yet"></div>
             <p>Is that floating icon freaking you out? Well, that’s extactly why we made this website. Find all the photos of yourself, your friends and the world that have no likes yet, and decide if they deserve to remain that way.</p>
         </div>
         <div class="nly-info__sub">

@@ -10,7 +10,7 @@ angular.module('app')
         link: function  (scope, element) {
             var touchedOnce = false;
 
-            element.on('click', function () {
+            element.find('.media__overlay').on('click', function () {
                 if (scope.type === 'self') { return; }
 
                 if (touchedOnce) {

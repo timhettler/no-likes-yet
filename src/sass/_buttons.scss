@@ -9,9 +9,9 @@ $button-border-radius: 0.52em;
     border-radius: $button-border-radius;
     color: $button-color--bg;
     display: inline-block;
-    font-size: 25px;
+    font-size: 13px;
     font-weight: bold;
-    letter-spacing: 2px;
+    letter-spacing: 1px;
     line-height: 1;
     padding: 1.88em 1em 1.32em;
     position: relative;
@@ -30,24 +30,24 @@ $button-border-radius: 0.52em;
         height: 100%;
         left: 0;
         position: absolute;
-        top: 8px;
+        top: 4px;
         width: 100%;
         z-index: -1;
 
         @include mobile() {
-            top: 4px;
+            top: 2px;
         }
     }
 
     &:active {
-        top: 8px;
+        top: 2px;
 
         @include mobile() {
-            top: 4px;
+            top: 1px;
         }
 
         &:before {
-            top: 0;
+            top: 2px;
         }
     }
 }

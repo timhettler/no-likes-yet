@@ -12,8 +12,15 @@ $base-font-family: 'Proxima Nova', 'Helvetica Neue', Helvetica, sans-serif;
     }
 }
 
+@mixin tablet() {
+    @media (max-width: 900px) {
+        @content;
+    }
+}
+
+
 @mixin desktop() {
-    @media (min-width: 601px) {
+    @media (min-width: 901px) {
         @content;
     }
 }

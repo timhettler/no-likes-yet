@@ -1,4 +1,4 @@
-$loading-bauble-size: 28px;
+$loading-bauble-size: 14px;
 
 @keyframes bounce {
     0% {
@@ -29,11 +29,12 @@ $loading-bauble-size: 28px;
 }
 
 .nly-loading-container {
-    padding: $loading-bauble-size 0;
+    margin-top: 10px;
+    padding: ($loading-bauble-size * 2) 0;
     text-align: center;
 
     @include mobile() {
-        padding: $loading-bauble-size/2 0;
+        padding: $loading-bauble-size 0;
     }
 }
 
@@ -55,6 +56,6 @@ $loading-bauble-size: 28px;
         animation-delay: 0.6s;
 
     }
-
-
 }
+
+
