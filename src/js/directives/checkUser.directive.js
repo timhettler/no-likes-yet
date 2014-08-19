@@ -5,19 +5,19 @@ angular.module('app')
             $rootScope.$on('$routeChangeStart', function(event, currRoute, prevRoute){
                 if (instagramService.hasAccessToken()) {
                     $log.debug('has access token');
-                    if (currRoute.templateUrl === "partials/splash.html") {
-                        $location.url('/media/?type=world', true);
-                        return;
-                    }
+                    // if (currRoute.templateUrl === "partials/splash.html") {
+                    //     $location.url('/media/?type=world', true);
+                    //     return;
+                    // }
                 }
 
                 if(ipCookie('access_token')) {
                     $log.debug('cookie found', ipCookie('access_token'));
                     instagramService.setAccessToken(ipCookie('access_token'));
-                    if (currRoute.templateUrl === "partials/splash.html") {
-                        $location.url('/media/?type=world', true);
-                        return;
-                    }
+                    // if (currRoute.templateUrl === "partials/splash.html") {
+                    //     $location.url('/media/?type=world', true);
+                    //     return;
+                    // }
                     return;
                 }
 

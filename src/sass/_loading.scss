@@ -58,4 +58,8 @@ $loading-bauble-size: 14px;
     }
 }
 
-
+.nly-loading--first-run {
+    > img {
+        width: 73px;
+    }
+}

@@ -27,6 +27,7 @@ module.exports = {
             'bower_components/angular-route/angular-route.js',
             'bower_components/angular-resource/angular-resource.js',
             'bower_components/angular-touch/angular-touch.js',
+            'bower_components/angular-sanitize/angular-sanitize.js',
             'bower_components/ngInfiniteScroll/ng-infinite-scroll.js',
             'bower_components/fastclick/lib/fastclick.js',
             'bower_components/moment/moment.js'

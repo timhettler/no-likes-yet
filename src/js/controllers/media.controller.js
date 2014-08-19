@@ -1,65 +1,8 @@
 var app = angular.module('app');
 
-var MediaCtrl = app.controller('MediaCtrl', function ($scope, $routeParams, $location, ipCookie, $q, instagramService) {
+var MediaCtrl = app.controller('MediaCtrl', function ($scope, $routeParams, $location, ipCookie, $q, instagramService, WORLD_COORDS) {
     var imagesPerPage = 8,
-        worldCoordinates = [
-            [40.781256, -73.966441],
-            [43.518556, -73.67054],
-            [42.457407, -2.449265],
-            [43.117275, -76.248722],
-            [35.245619, -101.821289],
-            [61.227957, -149.897461],
-            [45.521744, -122.67334],
-            [-34.599722, -58.381944],
-            [-41.47566, -72.949219],
-            [28.410067, -81.583699],
-            [38.68551, -96.503906],
-            [41.7898354, -69.9897323],
-            [30.24011, -97.712166],
-            [67.855856, 20.225294],
-            [48.8566667, 2.3509871],
-            [40.0149856, -105.2705456],
-            [43.2504393, -5.9832577],
-            [41.512995, 14.063514],
-            [40.65,-73.95],
-            [33.8575,-117.87556],
-            [39.1910983,-106.8175387],
-            [42.3584308,-71.0597732],
-            [41.850033,-87.6500523],
-            [34.0522342,-118.2436849],
-            [37.7749295,-122.4194155],
-            [35.6894875,139.6917064],
-            [37.566535,126.9779692],
-            [59.939039,30.315785],
-            [43.234782,-76.224604],
-            [43.036227,-76.136456],
-            [13.7234186,100.4762319],
-            [39.904667,116.408198],
-            [4.609866,-74.08205],
-            [30.064742,31.249509],
-            [28.635308,77.22496],
-            [23.709921,90.407143],
-            [23.129075,113.264423],
-            [41.012379,28.975926],
-            [-6.211544,106.845172],
-            [24.893379,67.028061],
-            [22.572646,88.363895],
-            [6.441158,3.417977],
-            [51.5001524,-0.1262362],
-            [14.6010326,120.9761599],
-            [19.4270499,-99.1275711],
-            [55.755786,37.617633],
-            [19.017656,72.856178],
-            [34.6937378,135.5021651],
-            [-22.9035393,-43.2095869],
-            [-23.5489433,-46.6388182],
-            [31.230708,121.472916],
-            [39.120876,117.21503],
-            [43.670233,-79.386755],
-            [45.545447,-73.639076],
-            [51.055149,-114.062438],
-            [51.770615,-1.25507]
-        ],
+        worldCoordinates = WORLD_COORDS(),
         worldToken;
 
     $scope.toggleView = function (string, boolean) {
@@ -78,8 +21,8 @@ var MediaCtrl = app.controller('MediaCtrl', function ($scope, $routeParams, $loc
         $location.search('type', type);
 
         if ($scope.view[type].length === 0 && type !== 'search') {
-            $scope.getMedia();
             $location.search('user', null);
+            $scope.getMedia();
         } else if (type === 'search') {
             if ($scope.searchInput) {
                 $location.search('user', $scope.searchInput);
@@ -97,6 +40,7 @@ var MediaCtrl = app.controller('MediaCtrl', function ($scope, $routeParams, $loc
         $scope.busy['search'] = true;
         $scope.view.search = [];
         $scope.toggleView('showError', false);
+        $scope.searchInput = $scope.searchInput.toLowerCase();
 
         instagramService.getUserData($scope.searchInput)
             .then(function (user) {
@@ -158,26 +102,29 @@ var MediaCtrl = app.controller('MediaCtrl', function ($scope, $routeParams, $loc
     $scope.getUserMedia = function (user) {
         var deferred = $q.defer(),
             media = [],
-            token = 0,
             getData = function () {
                 var next_max_id = ($scope.media[user.id].pagination.next_max_id) ? $scope.media[user.id].pagination.next_max_id : null;
                 instagramService.getUserMedia(user.id, next_max_id)
                     .then(function (result) {
+
                         if(result.data) {
                             media = media.concat(filterLikedMedia(result.data));
                         }
 
-                        $scope.media[user.id].pagination = result.pagination;
-                        token++;
+                        if(result.pagination) {
+                            $scope.media[user.id].pagination = result.pagination;
+                        }
 
                         if(media.length < imagesPerPage && result.pagination && result.pagination.next_max_id) {
                             getData();
                         } else {
+                            console.info('found %s images for %s found in %s requests', media.length, user.username);
+
                             if(!result.pagination.next_max_id) {
                                 console.info('found all 0 likes for %s', user.username);
                                 $scope.media[user.id].pagination = false;
                             }
-                            console.info('found %s images for %s found in %s requests', media.length, user.username, token);
+
                             $scope.media[user.id].data = $scope.media[user.id].data.concat(media);
                             deferred.resolve(media);
                         }
@@ -233,12 +180,18 @@ var MediaCtrl = app.controller('MediaCtrl', function ($scope, $routeParams, $loc
                         }
                     },
                     function () {
+                        console.log('found all 0 likes for %s', $scope.following[$scope.followingToken].username);
                         falseCount++;
-                        $scope.followingToken = ($scope.followingToken + 1 )% $scope.following.length;
+                        $scope.followingToken = ($scope.followingToken + 1 ) % $scope.following.length;
                         if (falseCount < $scope.following.length) {
                             getNextPage();
                         } else {
-                            deferred.resolve(media);
+                            console.log('found all 0 likes for followers');
+                            if (media.length > 0) {
+                                deferred.resolve(media);
+                            } else {
+                                deferred.reject();
+                            }
                         }
                     });
             };
@@ -304,7 +257,7 @@ var MediaCtrl = app.controller('MediaCtrl', function ($scope, $routeParams, $loc
         } else {
             instagramService.getUserFollowing($scope.user.id)
                 .then(function (following) {
-                    fisherYates(following); //randmize
+                    fisherYates(following); //randomize
                     $scope.following = following;
                     $scope.following.forEach(function (user) {
                         initUserMedia(user.id);
@@ -335,7 +288,13 @@ var MediaCtrl = app.controller('MediaCtrl', function ($scope, $routeParams, $loc
                     $scope.busy['self'] = false;
                 },
                 function () {
-                    console.log('all media found for self');
+
+                    if ($scope.view.self.length === 0) {
+                        setErrorMessage('You should be happy!', 'All of your photos have at least 1 like!');
+                        $scope.toggleView('showError', true);
+                    }
+
+                    $scope.complete['self'] = true;
                     $scope.busy['self'] = false;
                 });
         } else if ($scope.type === 'friends') {
@@ -347,6 +306,14 @@ var MediaCtrl = app.controller('MediaCtrl', function ($scope, $routeParams, $loc
                         .then(function (media) {
                             $scope.view.friends = $scope.view.friends.concat(media);
                             console.log('follower page', media);
+                            $scope.busy['friends'] = false;
+                        }, function () {
+                            if ($scope.view.friends.length === 0) {
+                                setErrorMessage('You have popular friends!', 'All of your friends\' photos have at least 1 like!');
+                                $scope.toggleView('showError', true);
+                            }
+
+                            $scope.complete['friends'] = true;
                             $scope.busy['friends'] = false;
                         });
                 });
@@ -373,6 +340,7 @@ var MediaCtrl = app.controller('MediaCtrl', function ($scope, $routeParams, $loc
         } else if ( $scope.type === 'search' ) {
             if (!$scope.searchUser) { return; }
             $scope.busy['search'] = true;
+            $scope.toggleView('showError', false);
 
             if ($scope.media[$scope.searchUser.id].data.length > 0 && $scope.view.search.length === 0) {
                 $scope.view.search = $scope.media[$scope.searchUser.id].data;
@@ -385,7 +353,12 @@ var MediaCtrl = app.controller('MediaCtrl', function ($scope, $routeParams, $loc
                     $scope.busy['search'] = false;
                 },
                 function () {
-                    console.log('all media found for '+$scope.searchUser.username);
+                    if ($scope.view.search === 0) {
+                        setErrorMessage('Instagram Pro!', 'All of '+$scope.searchUser+'\'s photos have at least 1 like!');
+                        $scope.toggleView('showError', true);
+                    }
+
+                    $scope.complete['search'] = true;
                     $scope.busy['search'] = false;
                 });
         }
@@ -400,6 +373,7 @@ var MediaCtrl = app.controller('MediaCtrl', function ($scope, $routeParams, $loc
             search: false
         };
         $scope.showInfo = false;
+        $scope.showError = false;
         $scope.showMobileNav = false;
         $scope.followingToken = 0;
         $scope.following = [];
@@ -411,6 +385,12 @@ var MediaCtrl = app.controller('MediaCtrl', function ($scope, $routeParams, $loc
             friends: [],
             self: [],
             search: []
+        };
+        $scope.complete = {
+            world: false,
+            friends: false,
+            self: false,
+            search: false
         };
 
         getUserData();

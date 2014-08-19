@@ -1,26 +1,26 @@
 .nly-search {
+    align-items: center;
     background-color: rgba($color--orange, 0.96);
     display: flex;
+    height: 80px;
     justify-content: center;
     left: 0;
-    padding: 30px;
     position: fixed;
     text-align: center;
     top: 80px;
+    transition: transform 250ms;
     z-index: 2;
     width: 100%;
 
-    @include tablet() {
+    @include tablet () {
+        height: 50px;
+        justify-content: flex-start;
+        padding: 0 30px;
         top: 50px;
     }
 
-    @include tablet () {
-        justify-content: flex-start;
-        padding: 15px 30px;
-    }
-
     &.is-hidden {
-        display: none;
+        transform: translateY(-100%);
     }
 }
 

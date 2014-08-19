@@ -21,9 +21,10 @@
     "angular-touch": "~1.2.21"
   },
   "devDependencies": {
-    "fastclick": "~1.0.2"
+    "fastclick": "~1.0.2",
+    "angular-sanitize": "~1.2.22"
   },
   "resolutions": {
-    "angular": "1.2.14"
+    "angular": "1.2.22"
   }
 }

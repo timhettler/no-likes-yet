@@ -4,15 +4,12 @@ angular.module('app')
         restrict: 'E',
         replace: true,
         scope: {
-            total: '@',
-            path: '@',
-            token: '@'
+            total: '@'
         },
         link: function (scope, elem, attrs, ctrl) {
-            var num = Math.round(Math.random() * (scope.total - 1)) + 1,
-                truePath = scope.path.replace(scope.token, num);
+            var num = Math.round(Math.random() * (scope.total - 1)) + 1;
 
-            elem.css('background-image', 'url('+truePath+')');
+            elem.addClass('nly-splash__bg--'+num);
         },
         template: '<div></div>'
     };
