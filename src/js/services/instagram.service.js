@@ -80,7 +80,11 @@ app.factory('instagramService', function ($http, $q, instagramApiData) {
 
             getData(mediaUrl)
                 .then(function (result) {
-                    deferred.resolve(result);
+                    if ( result.meta.code === 200 ) {
+                        deferred.resolve(result);
+                    } else {
+                        deferred.reject(result);
+                    }
                 });
 
         return deferred.promise;

@@ -1,0 +1,58 @@
+$transition-speed: 400ms;
+
+.media-overlay {
+    overflow: hidden;
+
+    .can-like & {
+        cursor: pointer;
+    }
+}
+
+    .media-overlay__bg {
+        background-color: rgba(#000, 0);
+        height: 100%;
+        left: 0;
+        position: absolute;
+        top: 0;
+        transition: all ($transition-speed / 2) linear;
+        width: 100%;
+        z-index: 1;
+
+        .can-like .media-overlay:hover & {
+            background-color: rgba(#000, 0.8);
+        }
+    }
+
+    .media-overlay__copy {
+        font-size: 17px;
+        line-height: 1.2;
+        left: 50%;
+        color: #fff;
+        position: absolute;
+        text-align: center;
+        top: 100%;
+        transform: translate(-50%, 0);
+        transition: all $transition-speed ease-in-out;
+        width: 50%;
+        z-index: 3;
+
+        .can-like .media-overlay:hover & {
+            top: 50%;
+            transform: translate(-50%, -50%);
+        }
+    }
+
+    .media-overlay__icon {
+        left: 50%;
+        position: absolute;
+        top: 100%;
+        transform: translate(-50%, 0);
+        transition: all $transition-speed ease;
+        width: 66%;
+        z-index: 2;
+
+        .can-like .media-overlay:hover & {
+            top: 50%;
+            transform: translate(-50%, -50%);
+        }
+    }

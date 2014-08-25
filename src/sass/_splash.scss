@@ -80,11 +80,12 @@
         .nly-splash__headline {
             color: $color--light;
             font-size: 25px;
+            line-height: 1.2;
             margin-bottom: 25px;
 
-            // @include mobile() {
-            //     font-size: 11px;
-            // }
+            @include mobile() {
+                font-size: 22px;
+            }
         }
 
         .nly-splash__button {

@@ -1,0 +1,13 @@
+@keyframes float {
+    from {
+        transform: translateY(5%);
+    }
+    to {
+        transform: translateY(-5%);
+    }
+}
+
+.nly-icon {
+    animation: float 1.5s infinite alternate ease-in-out;
+    animation-fill-mode: both;
+}

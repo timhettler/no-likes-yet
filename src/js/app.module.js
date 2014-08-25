@@ -11,7 +11,7 @@ app.constant('instagramApiData', (function () {
         return {
             clientId: '248c3275e45d465db7fe8f1e246cd60d',
             grant_type: 'authorization_code',
-            redirectUri: 'http://timhettler.com/nly/',
+            redirectUri: 'http://www.no-likes-yet.com/',
             scope: 'basic+likes'
         };
     } else {

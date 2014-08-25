@@ -337,7 +337,19 @@ module.exports = function ( grunt ) {
       }
     },
 
-
+    // SVG Store
+    // Merge svgs from a folder
+    // https://github.com/FWeinb/grunt-svgstore
+    svgstore: {
+        options: {
+            prefix : 'svg-'
+        },
+        dev: {
+            files: {
+                '<%= build_dir %>/assets/svg/icons.svg': ['src/assets/svg/*.svg'],
+            },
+        },
+    },
 
     // Grunt Modernizr
     // Sifts through your project files, gathers up your references to Modernizr tests and outputs a lean, mean Modernizr machine.
@@ -377,6 +389,7 @@ module.exports = function ( grunt ) {
 
     grunt.registerTask('build', [
         'jshint', 'clean', 'html2js',
+        //'svgstore',
         'copy:build_assets', 'copy:build_data', 'copy:build_appjs', 'copy:build_vendor',
         'copy:build_partials',
         'compass:dev', 'autoprefixer:build', 'htmlbuild:build'

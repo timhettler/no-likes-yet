@@ -31,9 +31,7 @@ angular.module('app')
                     }
                 });
 
-            element.toggleClass('can-like', function () {
-                return scope.type !== 'self';
-            });
+            element.toggleClass('can-like', scope.type !== 'self');
 
             element.find('.media__overlay img')
                 .on('load', function () {

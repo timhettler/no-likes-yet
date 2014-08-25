@@ -59,7 +59,8 @@ $loading-bauble-size: 14px;
 }
 
 .nly-loading--first-run {
-    > img {
+    > .nly-icon {
+        margin: 0 auto;
         width: 73px;
     }
 }

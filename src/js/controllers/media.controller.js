@@ -53,7 +53,7 @@ var MediaCtrl = app.controller('MediaCtrl', function ($scope, $routeParams, $loc
                 $scope.getMedia();
             }, function (result) {
                 $scope.busy['search'] = false;
-                setErrorMessage('Stop making things up.', 'That user couldn\'t be found. Try searching for someone else.');
+                setErrorMessage('Yikes!', 'Stop making things up. That user doens\'t exist.');
                 $scope.toggleView('showError', true);
             });
     };
@@ -105,7 +105,7 @@ var MediaCtrl = app.controller('MediaCtrl', function ($scope, $routeParams, $loc
             getData = function () {
                 var next_max_id = ($scope.media[user.id].pagination.next_max_id) ? $scope.media[user.id].pagination.next_max_id : null;
                 instagramService.getUserMedia(user.id, next_max_id)
-                    .then(function (result) {
+                    .then(function ( result ) {
 
                         if(result.data) {
                             media = media.concat(filterLikedMedia(result.data));
@@ -118,7 +118,7 @@ var MediaCtrl = app.controller('MediaCtrl', function ($scope, $routeParams, $loc
                         if(media.length < imagesPerPage && result.pagination && result.pagination.next_max_id) {
                             getData();
                         } else {
-                            console.info('found %s images for %s found in %s requests', media.length, user.username);
+                            console.info('found %s images for %s', media.length, user.username);
 
                             if(!result.pagination.next_max_id) {
                                 console.info('found all 0 likes for %s', user.username);
@@ -128,6 +128,9 @@ var MediaCtrl = app.controller('MediaCtrl', function ($scope, $routeParams, $loc
                             $scope.media[user.id].data = $scope.media[user.id].data.concat(media);
                             deferred.resolve(media);
                         }
+                    },
+                    function ( result ) {
+                        deferred.reject( result );
                     });
             };
 
@@ -309,7 +312,7 @@ var MediaCtrl = app.controller('MediaCtrl', function ($scope, $routeParams, $loc
                             $scope.busy['friends'] = false;
                         }, function () {
                             if ($scope.view.friends.length === 0) {
-                                setErrorMessage('You have popular friends!', 'All of your friends\' photos have at least 1 like!');
+                                setErrorMessage('Wow!', 'You have popular friends! All their photos are liked.');
                                 $scope.toggleView('showError', true);
                             }
 
@@ -352,13 +355,19 @@ var MediaCtrl = app.controller('MediaCtrl', function ($scope, $routeParams, $loc
                     console.log('search page', media);
                     $scope.busy['search'] = false;
                 },
-                function () {
-                    if ($scope.view.search === 0) {
-                        setErrorMessage('Instagram Pro!', 'All of '+$scope.searchUser+'\'s photos have at least 1 like!');
+                function ( result ) {
+                    if ( result && result.meta.code === 400 ) {
+                        setErrorMessage('Yikes!', 'This person has a protected profile.');
                         $scope.toggleView('showError', true);
+                    } else {
+                        if ($scope.view.search === 0) {
+                            setErrorMessage('Instagram Pro!', 'All of '+$scope.searchUser+'\'s photos have at least 1 like!');
+                            $scope.toggleView('showError', true);
+                        }
+
+                        $scope.complete['search'] = true;
                     }
 
-                    $scope.complete['search'] = true;
                     $scope.busy['search'] = false;
                 });
         }

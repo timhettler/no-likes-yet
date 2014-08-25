@@ -1,9 +1,10 @@
 <div class="media is-hidden">
     <div class="media__content">
         <img ng-src="{{data.images.standard_resolution.url}}" alt="">
-        <div class="media__overlay">
-            <p ng-bind-html="cta"></p>
-            <img src="assets/heart-large.png">
+        <div class="media__overlay media-overlay">
+            <div class="media-overlay__bg"></div>
+            <p class="media-overlay__copy" ng-bind-html="cta"></p>
+            <img class="media-overlay__icon" src="assets/heart-large.png">
         </div>
     </div>
     <div class="media__meta-data">

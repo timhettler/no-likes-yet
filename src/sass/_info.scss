@@ -66,11 +66,20 @@
         .nly-info__social {
             text-align: center;
 
-            img {
+            > a {
+                color: #8c8c8c;
+                border: 5px solid;
+                border-radius: 50%;
                 display: inline-block;
-                margin: 0 10px;
-                opacity: 0.5;
-                width: 45px;
+                width: 100px;
+                height: 100px;
+            }
+
+            svg {
+                display: inline-block;
+                fill: currentColor;
+                width: 100%;
+                height: 100%;
 
                 @include mobile() {
                     margin: 0 5px;
