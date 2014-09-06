@@ -6,6 +6,8 @@ $color--orange: #f9651b;
 
 $base-font-family: 'Proxima Nova', 'Helvetica Neue', Helvetica, sans-serif;
 
+$transition-speed: 300ms;
+
 @mixin mobile() {
     @media (max-width: 600px) {
         @content;

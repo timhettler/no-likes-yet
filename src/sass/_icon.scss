@@ -8,6 +8,28 @@
 }
 
 .nly-icon {
-    animation: float 1.5s infinite alternate ease-in-out;
-    animation-fill-mode: both;
+    position: relative;
+    padding-bottom: 20px;
+
+    &__image {
+        animation: float 1.25s infinite alternate ease-in-out;
+        animation-fill-mode: both;
+    }
+
+    &__shadow {
+        background-color: #E1E1E1;
+        border-radius: 50%;
+        bottom: 0;
+        height:10px;
+        left: 50%;
+        position: absolute;
+        transform: translateX(-50%);
+        width: 66%;
+    }
+
+    &--loading {
+        .nly-icon__image {
+            animation-duration: 0.5s;
+        }
+    }
 }

@@ -18,7 +18,7 @@ app.constant('instagramApiData', (function () {
         return {
             clientId: 'ed254d50500045dd81f073465e10a777',
             grant_type: 'authorization_code',
-            redirectUri: 'http://localhost/freelance/no-likes-yet/build/',
+            redirectUri: 'http://localhost/no-likes-yet/build/',
             scope: 'basic+likes'
         };
     }
@@ -88,18 +88,21 @@ app.constant('WORLD_COORDS', function () {
 
 app.constant('CTA', [
     'Be the first like.',
-    'Doesn’t this deserve a like?',
-    'One like would make his day.',
+    '#click #to #like #this #photo',
+    'One like would make their day.',
     'Like me :(',
-    'You don’t like the composition?',
-    'Such a likable filter.',
-    'You likey likey?',
-    'Isn’t this likeable?',
-    'Most likely to get a like.',
-    'Isn’t this worth a like?',
-    'Make someone\'s day and like this photo.',
-    'Almost there&hellip; now just click.',
-    'Nobody will know you liked this. ',
-    'What\'s one like for you? ',
-    'Your one like is worth a million.'
+    'Yikes.',
+    'Nobody will know you liked this.',
+    'Your one like is worth a million.',
+    'Just imagine a better filter.',
+    'Let\'s end this embarrassment.',
+    'Help this poor photo.',
+    'Not all instagrams are perfect.',
+    'One small like for you&hellip;',
+    'One big like for mankind.',
+    'Could this be like at first sight.',
+    'You likey?',
+    'What\'s one like for you?',
+    'It must be the caption.',
+    'It might not be a beautiful sunset.'
 ]);

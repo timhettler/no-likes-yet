@@ -1,5 +1,5 @@
 angular.module('app')
-.directive('media', function(instagramService, $timeout) {
+.directive('media', function(instagramService, $timeout, $rootScope) {
     return {
         restrict: 'E',
         replace: true,
@@ -13,30 +13,46 @@ angular.module('app')
         link: function  (scope, element) {
             var touchedOnce = false;
 
-            element.find('.media__overlay')
+            var transEndEventNames = {
+                'WebkitTransition' : 'webkitTransitionEnd',// Saf 6, Android Browser
+                'MozTransition'    : 'transitionend',      // only for FF < 15
+                'transition'       : 'transitionend'       // IE10, Opera, Chrome, FF 15+, Saf 7+
+            },
+            transEndEventName = transEndEventNames[ Modernizr.prefixed('transition') ];
+
+            var doLike = function () {
+                element.addClass('is-liked').one(transEndEventName, function () {
+                    $timeout(function () {
+                        element.addClass('is-hidden');
+                    }, 900);
+                });
+                // instagramService.setLike(scope.data.id);
+            };
+
+            element.find('.media-overlay')
                 .on('click', function () {
+
                     if (scope.type === 'self') { return; }
 
-                    if (touchedOnce) {
-                        instagramService.setLike(scope.data.id);
-
-                        element.fadeOut(500, function () {
-                                element.remove();
-                            });
+                    if (!Modernizr.touch) {
+                        doLike();
                     } else {
-                        touchedOnce = true;
-                        $timeout(function () {
-                            touchedOnce = false;
-                        }, 500);
+                        if (touchedOnce) {
+                            doLike();
+                        } else {
+                            scope.$emit('MEDIA_TAPPED', element);
+                            touchedOnce = true;
+                            element.addClass('is-active');
+                        }
                     }
                 });
 
-            element.toggleClass('can-like', scope.type !== 'self');
-
-            element.find('.media__overlay img')
-                .on('load', function () {
-                    element.removeClass('is-hidden');
-                });
+            $rootScope.$on('MEDIA_TAPPED', function (tappedElem) {
+                if (tappedElem !== element) {
+                    touchedOnce = false;
+                    element.removeClass('is-active');
+                }
+            });
         },
         templateUrl: 'templates/media.tpl.html',
     };

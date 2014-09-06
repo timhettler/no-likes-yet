@@ -7,9 +7,13 @@ var AuthCtrl = app.controller('AuthCtrl', function ($scope, $location, $routePar
 
     instagramService.getSelfData()
             .then(function (user) {
+                var type = ipCookie('attemptedRoute') ? ipCookie('attemptedRoute') : 'world';
+
                 ipCookie('self', user , { expires: 30 });
+                ipCookie.remove('attemptedRoute');
                 $scope.hasAccessToken = true;
-                $location.replace().url('/media/?type=world');
+
+                $location.replace().url('/media/?type='+type);
             },
             function (meta) {
                 ipCookie.remove('access_token');

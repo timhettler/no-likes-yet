@@ -4,7 +4,7 @@ $container-width: 2860px;
 
 .nly-media-container {
     position: relative;
-    padding: 10px;
+    padding: 10px 0;
     transition: margin 250ms;
 
     &:after {
@@ -35,37 +35,40 @@ $container-width: 2860px;
     position: relative;
     vertical-align: top;
     overflow: hidden;
-    transition: opacity 1s;
+    transition: opacity $transition-speed ($transition-speed * 2);
 
     &.is-hidden {
+        display: none;
+    }
+
+    &.is-liked {
         opacity: 0;
+        pointer-events: none;
     }
 
-    @include desktop() {
-        width: 24.5%;
-        margin-left: 0.66%;
-        margin-bottom: 0.66%;
-
-        &:nth-child(4n+1) {
-            margin-left: 0;
-        }
-
+    @media (min-width: 601px) and (max-width: 800px) {
+        margin-left: 2%;
+        margin-bottom: 2%;
+        width: 47%;
     }
 
-    @include tablet() {
+    @media (min-width: 801px) and (max-width: 1200px) {
         margin-left: 1.2%;
         margin-bottom: 1.2%;
-        width: 32.5%;
+        width: 31.7%;
+    }
 
-        &:nth-child(3n+1) {
-            margin-left: 0;
-        }
+    @media (min-width: 1201px) {
+        margin-left: 0.66%;
+        margin-bottom: 0.66%;
+        width: 24.2%;
+
     }
 
     @include mobile() {
         display: block;
         margin-bottom: 3.2%;
-        margin-left: 0;
+        margin-left: 0 !important;
         width: auto;
     }
 }
@@ -102,7 +105,7 @@ $container-width: 2860px;
             color: inherit;
             text-decoration: none;
 
-            &:hover {
+            .no-touch &:hover {
                 border-bottom: 1px solid;
             }
         }
@@ -125,7 +128,36 @@ $container-width: 2860px;
         }
     }
 
-    .media__timestamp {
+    .media__permalink {
         color: $color--gray;
         transition: all 400ms;
     }
+
+.media-permalink {
+    overflow: hidden;
+    position: relative;
+    white-space: nowrap;
+
+    &__timestamp {
+        position: absolute;
+        right: 0;
+        top: 0;
+        transition: all 250ms;
+
+        .no-touch .media-permalink:hover & {
+            opacity: 0;
+        }
+    }
+
+    &__cta {
+        opacity: 0;
+        transition: all 250ms;
+        transform: translateX(100%);
+        user-select: none;
+
+        .no-touch .media-permalink:hover & {
+            transform: translateX(0);
+            opacity: 1;
+        }
+    }
+}

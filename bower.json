@@ -23,8 +23,5 @@
   "devDependencies": {
     "fastclick": "~1.0.2",
     "angular-sanitize": "~1.2.22"
-  },
-  "resolutions": {
-    "angular": "1.2.22"
   }
 }

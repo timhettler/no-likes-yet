@@ -1,5 +1,3 @@
-$transition-speed: 400ms;
-
 .media-overlay {
     overflow: hidden;
 
@@ -14,45 +12,160 @@ $transition-speed: 400ms;
         left: 0;
         position: absolute;
         top: 0;
-        transition: all ($transition-speed / 2) linear;
+        transition: all ($transition-speed * 0.5) linear;
         width: 100%;
         z-index: 1;
 
-        .can-like .media-overlay:hover & {
+        .no-touch .media-overlay:hover &,
+        .touch .media.is-active & {
             background-color: rgba(#000, 0.8);
         }
     }
 
-    .media-overlay__copy {
-        font-size: 17px;
-        line-height: 1.2;
-        left: 50%;
-        color: #fff;
-        position: absolute;
-        text-align: center;
-        top: 100%;
-        transform: translate(-50%, 0);
-        transition: all $transition-speed ease-in-out;
-        width: 50%;
-        z-index: 3;
+    .media-overlay__cta {
+        // height: 100%;
+        // left: 0;
+        // position: absolute;
+        // top: 0;
+        // transition: all ($transition-speed * 0.5) linear;
+        // width: 100%;
+        // z-index: 2;
+    }
 
-        .can-like .media-overlay:hover & {
-            top: 50%;
-            transform: translate(-50%, -50%);
+.media-cta {
+
+}
+
+    .media-cta__container {
+        &--self {
+            left: 50%;
+            position: absolute;
+            transition: all ($transition-speed * 0.75) ease-in-out;
+            transform: translate(-50%, 0);
+            top: 100%;
+            width: 66%;
+            z-index: 3;
+
+            .no-touch .media-overlay:hover &,
+            .touch .media.is-active & {
+                transform: translate(-50%, calc(-100% - 20px));
+            }
         }
     }
 
-    .media-overlay__icon {
-        left: 50%;
-        position: absolute;
-        top: 100%;
-        transform: translate(-50%, 0);
-        transition: all $transition-speed ease;
-        width: 66%;
-        z-index: 2;
+        .media-cta__copy {
+            font-size: 17px;
+            line-height: 1.2;
+            color: #fff;
+            text-align: center;
+            transition: opacity $transition-speed;
 
-        .can-like .media-overlay:hover & {
-            top: 50%;
-            transform: translate(-50%, -50%);
+            &--self {
+                color: $color--orange;
+                margin-bottom: 1.2em;
+            }
+
+            &--liked {
+                color: #000;
+                opacity: 0;
+
+                .is-liked & {
+                    opacity: 1;
+                }
+            }
+
+            &--unliked {
+                .is-liked & {
+                    opacity: 0;
+                }
+            }
+
+            .media-cta__container--other & {
+                left: 50%;
+                position: absolute;
+                top: 100%;
+                transform: translate(-50%, 0);
+                transition: all ($transition-speed * 0.75) ease-in-out;
+                width: 50%;
+                z-index: 3;
+
+                .no-touch .media-overlay:hover &,
+                .touch .media.is-active & {
+                    top: 50%;
+                    transform: translate(-50%, -50%);
+                }
+            }
         }
+
+        .media-cta__icon {
+            width: 66%;
+
+            .media-cta__container--other & {
+                left: 50%;
+                position: absolute;
+                top: 100%;
+                transform: translate(-50%, 0);
+                transition: all $transition-speed ease;
+                z-index: 2;
+
+                .no-touch .media-overlay:hover &,
+                .touch .media.is-active & {
+                    top: 50%;
+                    transform: translate(-50%, -50%);
+                }
+            }
+
+            > svg {
+                display: block;
+                width: 100%;
+                fill: $color--orange;
+                transition: fill $transition-speed;
+
+                .is-liked & {
+                    fill: #fff;
+                }
+            }
+        }
+
+.media-share {
+}
+
+    .media-share__copy {
+        color: #aaa;
+        font-size: 17px;
+        line-height: 1.2;
+        text-align: center;
+    }
+
+.media-ctas {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
+    .media-ctas__item {
+        width: 50%;
+
+        a {
+            color: #8c8c8c;
+            display: block;
+
+            .no-touch &:hover {
+                color: #fff;
+            }
+        }
+
+        svg {
+            fill: currentColor;
+            transition: fill $transition-speed;
+            width: 100%;
+        }
+
+        // &:first-child {
+        //     margin-right: 5%
+        // }
+
+        // &:last-child {
+        //     margin-left: 5%;
+        // }
     }

@@ -6,9 +6,7 @@ module.exports = {
     meta: {
         title: 'No likes yet.',
         description: 'Discover all the photos on Instagram with no likes yet.',
-        viewport: 'width=device-width, initial-scale=1, user-scalable=no, minimal-ui',
-        url: '',
-        image: ''
+        viewport: 'width=device-width, initial-scale=1, user-scalable=no, minimal-ui'
     },
 
     app_files: {
@@ -28,7 +26,7 @@ module.exports = {
             'bower_components/angular-resource/angular-resource.js',
             'bower_components/angular-touch/angular-touch.js',
             'bower_components/angular-sanitize/angular-sanitize.js',
-            'bower_components/ngInfiniteScroll/ng-infinite-scroll.js',
+            'bower_components/ngInfiniteScroll/build/ng-infinite-scroll.js',
             'bower_components/fastclick/lib/fastclick.js',
             'bower_components/moment/moment.js'
         ]
