@@ -29,7 +29,7 @@
     }
 
     @include desktop() {
-        left: 40px;
+        left: 20px;
         transform: translateY(-50%);
     }
 
@@ -37,12 +37,15 @@
         background-image: image-url('heart-large.png');
         background-size: contain;
         background-repeat: no-repeat;
+        background-position: center;
         content: '';
         display: inline-block;
         vertical-align: middle;
         width: 20px;
-        height: 20px;
-        margin-right: 13px;
+        height: 18px;
+        margin-right: 7px;
+        position: relative;
+        top: -3px;
     }
 }
 
@@ -104,7 +107,7 @@
             .no-touch &:hover,
             &.is-selected {
                 color: #000;
-                padding-bottom: 25px;
+                padding-bottom: 27px;
                 border-bottom: 5px solid $color--light-gray;
             }
 
@@ -134,13 +137,37 @@
 
         @include tablet() {
             background-color: $color--orange;
-            border-bottom: 2px solid #fff;
+            border-bottom: 1px solid #fff;
             color: #fff;
-            padding: 20px;
+            padding-left: 20px;
+            position: relative;
             text-transform: uppercase;
+            line-height: 54px;
+            height: 54px;
+            font-size: 16px;
+
+            &:last-child {
+                border-bottom: none;
+            }
+
+            .check-icon {
+                color: #fff;
+                display: block;
+                opacity: 0;
+                position: absolute;
+                right: 20px;
+                top: 50%;
+                transition: opacity $transition-speed;
+                transform: translateY(-50%);
+                width: 20px;
+                height: 20px;
+            }
 
             &.is-selected {
-                background-color: $color--black;
+                .check-icon {
+                    opacity: 1;
+                }
+                //background-color: $color--black;
             }
         }
     }
@@ -157,6 +184,7 @@
     .nly-main-nav__close {
         background-image: url(../assets/close.png);
         background-size: contain;
+        background-repeat: no-repeat;
         height: 16px;
         position: absolute;
         right: 15px;
@@ -170,6 +198,7 @@
         }
         background-image: url(../assets/filter.png);
         background-size: contain;
+        background-repeat: no-repeat;
         height: 18px;
         left: 15px;
         position: absolute;
@@ -181,16 +210,19 @@
     .nly-main-nav__about{
         background: url(../assets/info-orange.png) center no-repeat;
         background-size: contain;
+        background-repeat: no-repeat;
         cursor: pointer;
         height: 25px;
         position: absolute;
-        right: 40px;
+        right: 20px;
         top: 50%;
         transform: translateY(-50%);
         width: 25px;
 
-        @include mobile () {
+        @include tablet () {
+            height: 23px;
+            width: 23px;
             background-image: url(../assets/info-gray.png);
-            right: 20px;
+            right: 15px;
         }
     }

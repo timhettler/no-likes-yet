@@ -10,12 +10,12 @@
                         <div class="media-share__copy">Share for help</div>
                         <div class="media-share__ctas media-ctas">
                             <div class="media-ctas__item">
-                                <a fb-share href="https://www.facebook.com/dialog/share?app_id=675619645861071&amp;display=page&amp;href=http%3A//www.no-likes-yet.com/media/%3Ftype%3Dsearch%26user%3D{{data.user.username}}&amp;redirect_uri=http%3A//www.no-likes-yet.com/media/%3Ftype%3Dself">
+                                <a fb-share href="https://www.facebook.com/dialog/share?app_id=675619645861071&amp;display=page&amp;href=http%3A%2F%2Fwww.nolikesyet.com%2F%23%2Fmedia%2F%3Ftype%3Dsearch%26user%3D{{data.user.username}}&amp;redirect_uri=http%3A%2F%2Fwww.nolikesyet.com%2F%23%2Fmedia%2F%3Ftype%3Dself">
                                     <svg-facebook></svg-facebook>
                                 </a>
                             </div>
                             <div class="media-ctas__item">
-                                <a tw-share ng-href="https://twitter.com/share?url=http%3A//www.no-likes-yet.com/media/%3Ftype%3Dsearch%26user%3D{{data.user.username}}&text=Discover all the photos on Instagram with no likes yet." target="_blank">
+                                <a tw-share ng-href="https://twitter.com/share?url=http%3A%2F%2Fwww.nolikesyet.com%2F%23%2Fmedia%2F%3Ftype%3Dsearch%26user%3D{{data.user.username}}&amp;text=Show some love to my Instagram photos that have never been liked – " target="_blank">
                                     <svg-twitter></svg-twitter>
                                 </a>
                             </div>
@@ -26,15 +26,7 @@
                     <p class="media-cta__copy media-cta__copy--unliked" ng-bind-html="cta"></p>
                     <p class="media-cta__copy media-cta__copy--liked">Liked!</p>
                     <div class="media-cta__icon">
-                        <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="443px" height="385px" viewBox="0 0 443 385" enable-background="new 0 0 443 385" xml:space="preserve">
-                            <path d="M121,1c1.667,0,3.333,0,5,0c5.734,0.74,11.486,1.366,17.201,2.24c33.26,5.087,58.772,21.837,76.158,50.762
-                                c0.731,1.218,1.509,2.407,2.547,4.057c0.928-1.227,1.58-1.919,2.043-2.721c16.162-28.069,40.24-45.081,71.953-51.232
-                                C303.194,2.69,310.63,2.016,318,1c1.333,0,2.667,0,4,0c7.061,0.909,14.202,1.409,21.168,2.796
-                                c39.194,7.799,66.74,30.874,83.199,66.58c20.914,45.369,20.316,91.93,3.513,138.38c-12.252,33.866-34.376,61.058-60.82,84.85
-                                c-42.696,38.414-92.45,65.553-144.289,89.232c-1.67,0.763-4.295,0.544-6.058-0.203c-6.583-2.787-13.038-5.893-19.459-9.045
-                                c-43.635-21.419-85.604-45.502-122.123-78.014C35.987,258.948,7.267,215.51,2.933,158.806
-                                c-2.525-33.038,1.709-64.805,17.531-94.308c17.425-32.493,43.803-53.516,80.4-60.727C107.5,2.464,114.284,1.904,121,1z"></path>
-                        </svg>
+                        <svg-heart></svg-heart>
                     </div>
                 </div>
             </div>
@@ -43,12 +35,12 @@
     <div class="media__meta-data">
         <div class="media__user"><a ng-href="{{'http://www.instagram.com/'+data.user.username}}" target="_blank">{{data.user.username}}</a></div>
         <div class="media__permalink media-permalink">
-            <div class="media-permalink__timestamp"><moment-from time="data.created_time"></moment-from></div>
-            <div class="media-permalink__cta">
-                <a ng-href="{{data.link}}" target="_blank">
-                    View on Instagram
-                </a>
-            </div>
+            <a ng-href="{{data.link}}" target="_blank">
+                <span class="media-permalink__timestamp"><moment-from time="data.created_time"></moment-from></span>
+                <span class="media-permalink__cta">
+                        View on Instagram
+                </span>
+            </a>
         </div>
     </div>
 </div>

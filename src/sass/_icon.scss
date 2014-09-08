@@ -7,6 +7,14 @@
     }
 }
 
+@keyframes squeeze {
+    from {
+        transform: translateX(-50%) scale(1.025);
+    } to {
+        transform: translateX(-50%) scale(0.975);
+    }
+}
+
 .nly-icon {
     position: relative;
     padding-bottom: 20px;
@@ -17,18 +25,23 @@
     }
 
     &__shadow {
+        animation: squeeze 1.25s infinite alternate ease-in-out;
+        animation-fill-mode: both;
         background-color: #E1E1E1;
         border-radius: 50%;
         bottom: 0;
-        height:10px;
+        height: 10px;
         left: 50%;
         position: absolute;
-        transform: translateX(-50%);
-        width: 66%;
+        width: 58%;
     }
 
     &--loading {
         .nly-icon__image {
+            animation-duration: 0.5s;
+        }
+
+        .nly-icon__shadow {
             animation-duration: 0.5s;
         }
     }

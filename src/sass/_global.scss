@@ -34,6 +34,14 @@ $transition-speed: 300ms;
     width: 100%;
 }
 
+//*
+// Disables text selection and the on iOS devices that displays information about a link.
+@mixin disable-selection() {
+  user-select: none; //disables text selection
+  -webkit-touch-callout: none; //disables callout on iOS devices that displays information about the link
+}
+
+
 %fullscreen {
     box-sizing: border-box;
     height: 100%;

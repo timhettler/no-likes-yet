@@ -5,6 +5,7 @@ $button-border-radius: 0.52em;
 
 .nly-button {
     @extend %not-a-button;
+    -webkit-tap-highlight-color: transparent;
     background-color: $button-color--text;
     border-radius: $button-border-radius;
     color: $button-color--bg;
@@ -29,6 +30,14 @@ $button-border-radius: 0.52em;
         top: 4px;
         width: 100%;
         z-index: -1;
+    }
+
+    &:hover {
+        top: 1px;
+
+        &:before {
+            top: 3px;
+        }
     }
 
     &:active {

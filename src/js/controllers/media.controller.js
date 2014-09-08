@@ -1,6 +1,6 @@
 var app = angular.module('app');
 
-var MediaCtrl = app.controller('MediaCtrl', function ($scope, $routeParams, $location, ipCookie, $q, instagramService, WORLD_COORDS) {
+var MediaCtrl = app.controller('MediaCtrl', function ($scope, $routeParams, $location, $timeout, ipCookie, $q, instagramService, WORLD_COORDS) {
     var imagesPerPage = 8,
         worldCoordinates = WORLD_COORDS(),
         worldToken;
@@ -8,6 +8,12 @@ var MediaCtrl = app.controller('MediaCtrl', function ($scope, $routeParams, $loc
     $scope.toggleView = function (string, boolean) {
         if(!string) {return;}
         $scope[string] = (boolean !== undefined) ? boolean : !$scope[string];
+    };
+
+    $scope.closeMobileNav = function () {
+        $timeout(function () {
+            $scope.toggleView('showMobileNav', false);
+        }, 500);
     };
 
     $scope.setType = function (type) {
@@ -184,9 +190,10 @@ var MediaCtrl = app.controller('MediaCtrl', function ($scope, $routeParams, $loc
                     },
                     function () {
                         console.log('found all 0 likes for %s', $scope.following[$scope.followingToken].username);
-                        falseCount++;
+                        //falseCount++;
+                        $scope.following.splice($scope.followingToken, 1);
                         $scope.followingToken = ($scope.followingToken + 1 ) % $scope.following.length;
-                        if (falseCount < $scope.following.length) {
+                        if ($scope.following.length > 0) {
                             getNextPage();
                         } else {
                             console.log('found all 0 likes for followers');
@@ -199,7 +206,11 @@ var MediaCtrl = app.controller('MediaCtrl', function ($scope, $routeParams, $loc
                     });
             };
 
-        getNextPage();
+        if ($scope.following.length > 0) {
+            getNextPage();
+        } else {
+            deferred.reject();
+        }
 
         return deferred.promise;
     };

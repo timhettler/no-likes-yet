@@ -1,7 +1,7 @@
 .media-overlay {
     overflow: hidden;
 
-    .can-like & {
+    .media:not([type="self"]) & {
         cursor: pointer;
     }
 }
@@ -22,22 +22,13 @@
         }
     }
 
-    .media-overlay__cta {
-        // height: 100%;
-        // left: 0;
-        // position: absolute;
-        // top: 0;
-        // transition: all ($transition-speed * 0.5) linear;
-        // width: 100%;
-        // z-index: 2;
-    }
-
 .media-cta {
 
 }
 
     .media-cta__container {
         &--self {
+            height: 50%;
             left: 50%;
             position: absolute;
             transition: all ($transition-speed * 0.75) ease-in-out;
@@ -62,11 +53,11 @@
 
             &--self {
                 color: $color--orange;
-                margin-bottom: 1.2em;
+                margin-bottom: 42px;
             }
 
             &--liked {
-                color: #000;
+                color: $color--orange;
                 opacity: 0;
 
                 .is-liked & {
@@ -115,11 +106,8 @@
                 }
             }
 
-            > svg {
-                display: block;
-                width: 100%;
+            > svg g {
                 fill: $color--orange;
-                transition: fill $transition-speed;
 
                 .is-liked & {
                     fill: #fff;
@@ -132,23 +120,26 @@
 
     .media-share__copy {
         color: #aaa;
-        font-size: 17px;
+        font-size: 13px;
         line-height: 1.2;
         text-align: center;
+        margin-bottom: 11px;
     }
 
 .media-ctas {
     display: flex;
-    justify-content: center;
-    width: 100%;
+    justify-content: space-around;
+    width: 120px;
+    margin: 0 auto;
 }
 
     .media-ctas__item {
-        width: 50%;
+        width: 50px;
 
         a {
             color: #8c8c8c;
             display: block;
+            outline: none;
 
             .no-touch &:hover {
                 color: #fff;
@@ -158,6 +149,7 @@
         svg {
             fill: currentColor;
             transition: fill $transition-speed;
+            height: 100%;
             width: 100%;
         }
 

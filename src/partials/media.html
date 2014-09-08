@@ -12,10 +12,10 @@
         <div class="nly-main-nav nly-main-nav--mobile" ng-class="{'is-hidden':!showMobileNav}">
             <!-- <input type="text" class="nly-main-nav__search" placeholder="Search username" /> -->
             <ul>
-                <li class="nly-main-nav__item" ng-class="{'is-selected':type === 'world'}" ng-click="setType('world');toggleView('showMobileNav', false);">See all photos with no likes yet</li>
-                <li class="nly-main-nav__item" ng-class="{'is-selected':type === 'friends'}" ng-click="setType('friends');toggleView('showMobileNav', false);">See friends photos with no likes yet</li>
-                <li class="nly-main-nav__item" ng-class="{'is-selected':type === 'self'}" ng-click="setType('self');toggleView('showMobileNav', false);">See my photos with no likes yet</li>
-                <li class="nly-main-nav__item" ng-class="{'is-selected':type === 'search'}" ng-click="setType('search');toggleView('showMobileNav', false);">Search by username</li>
+                <li class="nly-main-nav__item" ng-class="{'is-selected':type === 'world'}" ng-click="setType('world');closeMobileNav();">The World <span class="check-icon"><svg-check></svg-check></span></li>
+                <li class="nly-main-nav__item" ng-class="{'is-selected':type === 'friends'}" ng-click="setType('friends');closeMobileNav();">My Friends' Photos <span class="check-icon"><svg-check></svg-check></span></li>
+                <li class="nly-main-nav__item" ng-class="{'is-selected':type === 'self'}" ng-click="setType('self');closeMobileNav();">My Photos <span class="check-icon"><svg-check></svg-check></span></li>
+                <li class="nly-main-nav__item" ng-class="{'is-selected':type === 'search'}" ng-click="setType('search');closeMobileNav();">Find User <span class="check-icon"><svg-check></svg-check></span></li>
             </ul>
             <!-- <div class="nly-main-nav__close" ng-click="toggleView('showMobileNav', false);"></div> -->
         </div>
@@ -27,49 +27,50 @@
     </form>
     <div class="nly-main" ng-class="'nly-main--'+type" infinite-scroll="getMedia()" infinite-scroll-distance="1" infinite-scroll-disabled="busy[type]">
         <div class="nly-media-container nly-media-container--world" ng-show="type === 'world'">
-            <media ng-repeat="item in view.world track by item.id" data="item" type="{{type}}"></media>
+            <media ng-repeat="item in view.world" data="item" type="{{type}}"></media>
             <loading type="world" size="{{view.world.length}}"></loading>
         </div>
         <div class="nly-media-container nly-media-container--friends" ng-show="type === 'friends'">
-            <media ng-repeat="item in view.friends track by item.id" data="item" type="{{type}}"></media>
+            <media ng-repeat="item in view.friends" data="item" type="{{type}}"></media>
             <loading type="friends" size="{{view.friends.length}}"></loading>
             <p class="nly-media-container__end" ng-show="complete.friends === true">That's it for now.</p>
         </div>
         <div class="nly-media-container nly-media-container--self" ng-show="type === 'self'">
-            <media ng-repeat="item in view.self track by item.id" data="item" type="{{type}}"></media>
+            <media ng-repeat="item in view.self" data="item" type="{{type}}"></media>
             <loading type="self" size="{{view.self.length}}"></loading>
             <p class="nly-media-container__end" ng-show="complete.self === true">That's it for now.</p>
         </div>
         <div class="nly-media-container nly-media-container--search" ng-show="type === 'search'">
-            <media ng-repeat="item in view.search track by item.id" data="item" type="{{type}}"></media>
+            <media ng-repeat="item in view.search" data="item" type="{{type}}"></media>
             <loading type="search" size="{{view.search.length}}"></loading>
             <p class="nly-media-container__end" ng-show="complete.search === true">That's it for now.</p>
         </div>
     </div>
-    <div class="nly-info" ng-class="{'is-hidden':!showInfo}">
+    <div class="nly-info" ng-class="{'is-hidden':!showInfo}" disable-scroll>
         <div class="nly-info__container">
             <div class="nly-info__main">
                 <div class="nly-info__icon nly-icon">
                     <div class="nly-icon__image"><img src="assets/nly.png" alt="No likes yet."></div>
-                    <div class="nly-icon__shadow"></div>
                 </div>
-                <p>Okay we get it, not all Instagram photos are perfect, but zero likes? That's a user being’s worst nightmare. <i>No likes yet</i> brings you all the photos that never got a single like and invites you to explore the dark side of Instagram. Will they ever get their first like, or are they doomed to be on this website forever?</p>
+                <p>Okay we get it, not all Instagram photos are perfect, but zero likes? That's a user being’s worst nightmare. <i>No likes yet</i> brings you all the photos that never got a single like and invites you to explore the dark side of Instagram. Will they ever get their first like, or are they doomed to be on this website&nbsp;forever?</p>
             </div>
             <div class="nly-info__sub">
                 <div class="nly-info__social">
-                    <a fb-share href="https://www.facebook.com/dialog/share?app_id=675619645861071&amp;display=page&amp;href=http%3A//www.no-likes-yet.com/&amp;redirect_uri=http%3A%2F%2Fwww.no-likes-yet.com%2F%23%2Fmedia%2F">
+                    <a fb-share href="https://www.facebook.com/dialog/share?app_id=675619645861071&amp;display=page&amp;href=http%3A//www.nolikesyet.com/&amp;redirect_uri=http%3A%2F%2Fwww.nolikesyet.com%2F%23%2Fmedia%2F">
                         <svg-facebook></svg-facebook>
                     </a>
-                    <a tw-share href="https://twitter.com/share?url=http://www.no-likes-yet.com/&text=Discover all the photos on Instagram with no likes yet." target="_blank">
+                    <a tw-share href="https://twitter.com/share?url=http://www.nolikesyet.com/&amp;text=Discover all the photos on Instagram that never got a single like – " target="_blank">
                         <svg-twitter></svg-twitter>
                     </a>
                 </div>
                 <div class="nly-info__credits nly-credits">
                     <p>Made by <a href="http://instagram.com/danielsumarna" target="_blank">@danielsumarna</a>, <a href="http://instagram.com/talmidy" target="_blank">@talmidy</a> and&nbsp;<a href="http://instagram.com/timhettler" target="_blank">@timhettler</a>.</p>
-                    <p>You are logged in as {{user.username}}.</p>
+                    <p>You are logged in as @{{user.username}}.</p>
                 </div>
             </div>
-            <div class="nly-info__close" ng-click="toggleView('showInfo', false);"></div>
+            <div class="nly-info__close" ng-click="toggleView('showInfo', false);">
+                <svg-x></svg-x>
+            </div>
         </div>
     </div>
     <div class="nly-error" ng-class="{'is-hidden':!showError}">

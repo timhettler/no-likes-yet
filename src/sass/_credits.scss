@@ -1,22 +1,26 @@
 .nly-credits {
-    // font-weight: bold;
+    box-sizing: border-box;
+    //padding: 0 10px;
     text-align: center;
-
-    @include mobile () {
-        font-size: 12px;
-        margin: 25px 0;
-    }
+    width: 100%;
 
     > p {
-        line-height: 1.6;
-        margin-bottom: 0.5em;
+        font-size: 12px;
+        line-height: 1.3;
+        margin-bottom: 0.1em;
+
+        @include desktop () {
+            letter-spacing: 0.5px;
+        }
     }
 
     a {
         color: inherit;
         text-decoration: none;
+        transition: color $transition-speed;
 
-        &:hover {
+        .no-touch &:hover {
+            color: #fff;
             border-bottom: 1px solid;
         }
     }

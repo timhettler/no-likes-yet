@@ -17,10 +17,12 @@
 @import "_icon.scss";
 
 body {
+    @include disable-selection();
+    -webkit-font-smoothing: antialiased;
     font-family: $base-font-family;
     padding-top: 79px;
 
-    @include mobile () {
+    @include tablet () {
         padding-top: 50px;
     }
 }
@@ -28,6 +30,16 @@ body {
 img, svg {
     display: block;
     max-width: 100%;
+}
+
+svg {
+    height: 100%;
+    width: 100%;
+
+    g {
+        fill: currentColor;
+        transition: fill $transition-speed;
+    }
 }
 
 [ng-click] {

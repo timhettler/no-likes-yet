@@ -18,8 +18,7 @@
     align-items: center;
     background-color: rgba(#000, 0.9);
     display: flex;
-    flex-direction: column;
-    text-align: center;
+    justify-content: center;
     height: 100%;
     width: 100%;
 
@@ -34,20 +33,24 @@
 }
 
     .nly-info__main {
-        margin-top: 55px;
+        // margin-top: 55px;
+        margin: -48px 10px 0;
+        max-width: 800px;
+        text-align: center;
+        width: 66%;
 
-        @include desktop () {
-            width: 50%;
+        @include mobile () {
+            margin-top: -100px;
+            width: auto;
         }
 
         > p {
             color: #fff;
-            font-size: 16px;
+            font-size: 23px;
             line-height: 1.6;
-            margin: 50px 0;
 
             @include mobile () {
-                margin: 25px 0;
+                font-size: 16px;
             }
         }
     }
@@ -61,16 +64,25 @@
             }
         }
 
-    .nly-info__sub {}
+    .nly-info__sub {
+        position: absolute;
+        bottom: 15px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 100%;
+    }
 
         .nly-info__social {
+            margin-bottom: 10px;
             text-align: center;
 
             > a {
                 color: #8c8c8c;
                 display: inline-block;
-                width: 100px;
-                height: 100px;
+                width: 50px;
+                height: 50px;
+                outline: none;
+                margin: 0 2.5px;
 
                 .no-touch &:hover {
                     color: #fff;
@@ -79,9 +91,6 @@
 
             svg {
                 display: inline-block;
-                fill: currentColor;
-                transition: fill $transition-speed;
-                width: 100%;
 
                 @include mobile() {
                     margin: 0 5px;
@@ -91,23 +100,26 @@
 
         .nly-info__credits {
             color: rgba(#fff, 0.5);
-            margin: 50px 0;
         }
 
     .nly-info__close {
-        background-image: url(../assets/close.png);
-        background-size: contain;
-        height: 44px;
+        color: #fff;
+        height: 30px;
         position: absolute;
-        right: 24px;
-        top: 18px;
-        width: 48px;
+        right: 18px;
+        top: 24px;
+        width: 30px;
+        transition: opacity $transition-speed;
+
+        .no-touch &:hover {
+            opacity: 0.5;
+        }
 
         @include tablet () {
-            height: 22px;
-            right: 15px;
-            top: 15px;
-            width: 24px;
+            height: 20px;
+            right: 16px;
+            top: 16px;
+            width: 20px;
         }
     }
 

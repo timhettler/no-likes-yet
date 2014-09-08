@@ -32,13 +32,16 @@ angular.module('app')
             element.find('.media-overlay')
                 .on('click', function () {
 
-                    if (scope.type === 'self') { return; }
-
-                    if (!Modernizr.touch) {
+                    if (!Modernizr.touch && scope.type !== 'self') {
                         doLike();
                     } else {
                         if (touchedOnce) {
-                            doLike();
+                            if (scope.type !== 'self') {
+                                doLike();
+                            } else {
+                                touchedOnce = false;
+                                element.removeClass('is-active');
+                            }
                         } else {
                             scope.$emit('MEDIA_TAPPED', element);
                             touchedOnce = true;
