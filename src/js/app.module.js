@@ -18,7 +18,7 @@ app.constant('instagramApiData', (function () {
         return {
             clientId: 'ed254d50500045dd81f073465e10a777',
             grant_type: 'authorization_code',
-            redirectUri: 'http://localhost/no-likes-yet/build/',
+            redirectUri: 'http://localhost/no-likes-yet/bin/',
             scope: 'basic+likes'
         };
     }
@@ -82,7 +82,41 @@ app.constant('WORLD_COORDS', function () {
             [45.545447,-73.639076], // Montreal, CA
             [51.055149,-114.062438], // Calgary, CA
             [51.770615,-1.25507], // Oxford, UK
-            [40.7216,-73.952429] // Greenpoint, Brooklyn
+            [40.7216,-73.952429], // Greenpoint, Brooklyn
+            [53.349001, -6.266327], // Dublin, Ireland
+            [54.154867, -4.485769], // Douglas, Isle of Man
+            [54.598494, -5.92515], // Belfast, Northern Ireland
+            [57.152444, -2.098389], // Auberdeen, Scotland
+            [55.861029, -4.249563], // Glasgow, Scotland
+            [39.961176, -82.998794], // Columbus, OH
+            [40.440625, -79.995886], // Pittsburgh, PA
+            [39.952335, -75.163789], // Philadelphia, PA
+            [42.443961, -76.501881], // Ithaca, NY
+            [43.16103, -77.610922], // Rochester, NY
+            [40.712784, -74.005941], // FiDi, NYC
+            [40.586725, -73.811499], // Rockaway Beach, Queens
+            [40.706446, -73.953616], // Williamsburg, Brooklyn
+            [40.694428, -73.921286], // Bushwick, Brooklyn
+            [40.660204, -73.968956], // Prospect Park, Brooklyn
+            [40.759011, -73.984472], // Times Square, NYC
+            [33.748995, -84.387982], // Atlanta, GA
+            [30.421309, -87.216915], // Pensacola, FL
+            [29.951066, -90.071532], // New Orleans, LA
+            [23.05407, -82.345189], // Havana, Cuba
+            [42.886447, -78.878369], // Buffalo, NY
+            [-33.924868, 18.424055], // Cape Town, South Africa
+            [-33.867487, 151.20699], // Sydney, Australia
+            [-27.471011, 153.023449], // Brisbane, Australia
+            [-31.953004, 115.857469], // Perth, Australia
+            [35.179554, 129.075642], // Busan, South Korea
+            [59.329323, 18.068581], // Stockholm, Sweden
+            [47.497912, 19.040235], // Budapest, Hungary
+            [32.0853, 34.781768], // Tel Aviv,Israel
+            [25.047664, 55.181741], // Dubai, UAE
+            [43.073052, -89.40123], // Madison, WI
+            [32.833461, -96.791945], // Highland Park, TX
+            [32.715738, -117.161084], // San Diego, CA
+            [40.744679, -73.948542] // LIC, Queens
         ];
 });
 

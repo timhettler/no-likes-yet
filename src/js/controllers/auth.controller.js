@@ -7,13 +7,21 @@ var AuthCtrl = app.controller('AuthCtrl', function ($scope, $location, $routePar
 
     instagramService.getSelfData()
             .then(function (user) {
-                var type = ipCookie('attemptedRoute') ? ipCookie('attemptedRoute') : 'world';
+                var type = [];
+
+                if ( ipCookie('attemptedRoute') ) {
+                    angular.forEach(ipCookie('attemptedRoute'), function (value, key) {
+                        type.push(key+'='+value);
+                    });
+                } else {
+                    type = ['type=world'];
+                }
 
                 ipCookie('self', user , { expires: 30 });
                 ipCookie.remove('attemptedRoute');
                 $scope.hasAccessToken = true;
 
-                $location.replace().url('/media/?type='+type);
+                $location.replace().url('/media/?'+type.join('&'));
             },
             function (meta) {
                 ipCookie.remove('access_token');

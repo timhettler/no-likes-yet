@@ -23,7 +23,7 @@ angular.module('app')
 
                 if (currRoute.requiresAuth) {
                     $log.debug('route requires auth, redirecting');
-                    ipCookie('attemptedRoute', currRoute.params.type , { expires: 1 });
+                    ipCookie('attemptedRoute', currRoute.params , { expires: 1 });
                     $location.url('/', true);
                     return;
                 }

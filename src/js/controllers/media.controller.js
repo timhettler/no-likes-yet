@@ -1,6 +1,6 @@
 var app = angular.module('app');
 
-var MediaCtrl = app.controller('MediaCtrl', function ($scope, $routeParams, $location, $timeout, ipCookie, $q, instagramService, WORLD_COORDS) {
+var MediaCtrl = app.controller('MediaCtrl', function ($scope, $routeParams, $location, $timeout, $q, $log, ipCookie, instagramService, WORLD_COORDS) {
     var imagesPerPage = 8,
         worldCoordinates = WORLD_COORDS(),
         worldToken;
@@ -76,7 +76,7 @@ var MediaCtrl = app.controller('MediaCtrl', function ($scope, $routeParams, $loc
     var getUserData = function () {
         instagramService.getSelfData()
             .then(function (user) {
-                console.log('got user data');
+                $log.debug('got user data');
                 $scope.user = user;
 
                 initUserMedia($scope.user.id);
@@ -84,9 +84,10 @@ var MediaCtrl = app.controller('MediaCtrl', function ($scope, $routeParams, $loc
                 $scope.setType($routeParams.type || 'world');
             },
             function (meta) {
-                console.log('access token invalid');
+                $log.debug('access token invalid');
                 instagramService.setAccessToken(null);
                 ipCookie.remove('access_token');
+                ipCookie('attemptedRoute', $location.search() , { expires: 1 });
                 $location.url('/', true);
             });
 
@@ -124,10 +125,10 @@ var MediaCtrl = app.controller('MediaCtrl', function ($scope, $routeParams, $loc
                         if(media.length < imagesPerPage && result.pagination && result.pagination.next_max_id) {
                             getData();
                         } else {
-                            console.info('found %s images for %s', media.length, user.username);
+                            $log.debug('found %s images for %s', media.length, user.username);
 
                             if(!result.pagination.next_max_id) {
-                                console.info('found all 0 likes for %s', user.username);
+                                $log.debug('found all 0 likes for %s', user.username);
                                 $scope.media[user.id].pagination = false;
                             }
 
@@ -177,26 +178,31 @@ var MediaCtrl = app.controller('MediaCtrl', function ($scope, $routeParams, $loc
                 var followerId = $scope.following[$scope.followingToken].id;
                 $scope.getUserMediaPage(followerId)
                     .then(function (result) {
-                        console.log('found %s images for %s', filterLikedMedia(result.data).length, $scope.following[$scope.followingToken].username);
-                        $scope.media[followerId].pagination = result.pagination;
+                        $log.debug('found %s images for %s', filterLikedMedia(result.data).length, $scope.following[$scope.followingToken].username);
+                        if(!result.pagination.next_max_id) {
+                            $log.debug('found all 0 likes for %s', $scope.following[$scope.followingToken].username);
+                            //$scope.following.splice($scope.followingToken, 1);
+                            $scope.media[followerId].pagination = false;
+                        } else {
+                            $scope.media[followerId].pagination = result.pagination;
+                        }
                         $scope.media[followerId].data = $scope.media[followerId].data.concat(filterLikedMedia(result.data));
                         media = media.concat(filterLikedMedia(result.data));
                         $scope.followingToken = ($scope.followingToken + 1) % $scope.following.length;
-                        if (media.length < imagesPerPage) {
+                        if (media.length < imagesPerPage && $scope.following.length > 0) {
                             getNextPage();
                         } else {
                             deferred.resolve(media);
                         }
                     },
                     function () {
-                        console.log('found all 0 likes for %s', $scope.following[$scope.followingToken].username);
-                        //falseCount++;
-                        $scope.following.splice($scope.followingToken, 1);
+                        falseCount++;
+                        //$scope.following.splice($scope.followingToken, 1);
                         $scope.followingToken = ($scope.followingToken + 1 ) % $scope.following.length;
-                        if ($scope.following.length > 0) {
+                        if ($scope.following.length > falseCount) {
                             getNextPage();
                         } else {
-                            console.log('found all 0 likes for followers');
+                            $log.debug('found all 0 likes for followers');
                             if (media.length > 0) {
                                 deferred.resolve(media);
                             } else {
@@ -239,7 +245,7 @@ var MediaCtrl = app.controller('MediaCtrl', function ($scope, $routeParams, $loc
                 worldToken = getRandomToken();
                 getWorldMediaPage(worldCoordinates[worldToken])
                     .then(function (result) {
-                        console.log('found %s images for %s', filterLikedMedia(result.data).length, worldCoordinates[worldToken].join());
+                        $log.debug('found %s images for %s', filterLikedMedia(result.data).length, worldCoordinates[worldToken].join());
                         $scope.worldMedia[worldToken].max_timestamp = result.data[result.data.length - 1].created_time - 1000;
                         $scope.worldMedia[worldToken].data = $scope.worldMedia[worldToken].data.concat(filterLikedMedia(result.data));
                         media = media.concat(filterLikedMedia(result.data));
@@ -250,11 +256,7 @@ var MediaCtrl = app.controller('MediaCtrl', function ($scope, $routeParams, $loc
                         }
                     },
                     function () {
-                        if (falseCount < worldCoordinates.length) {
-                            getNextPage();
-                        } else {
-                            deferred.resolve(media);
-                        }
+                        getNextPage();
                     });
             };
 
@@ -319,7 +321,7 @@ var MediaCtrl = app.controller('MediaCtrl', function ($scope, $routeParams, $loc
                     getFollowerPage()
                         .then(function (media) {
                             $scope.view.friends = $scope.view.friends.concat(media);
-                            console.log('follower page', media);
+                            $log.debug('follower page', media);
                             $scope.busy['friends'] = false;
                         }, function () {
                             if ($scope.view.friends.length === 0) {
@@ -348,7 +350,7 @@ var MediaCtrl = app.controller('MediaCtrl', function ($scope, $routeParams, $loc
             getWorldPage()
                 .then(function (media) {
                     $scope.view.world = $scope.view.world.concat(media);
-                    console.log('world page', media);
+                    $log.debug('world page', media);
                     $scope.busy['world'] = false;
                 });
         } else if ( $scope.type === 'search' ) {
@@ -363,7 +365,7 @@ var MediaCtrl = app.controller('MediaCtrl', function ($scope, $routeParams, $loc
             $scope.getUserMedia($scope.searchUser)
                 .then(function (media) {
                     $scope.view.search = $scope.view.search.concat(media);
-                    console.log('search page', media);
+                    $log.debug('search page', media);
                     $scope.busy['search'] = false;
                 },
                 function ( result ) {

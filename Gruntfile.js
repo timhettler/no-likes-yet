@@ -20,7 +20,9 @@ module.exports = function ( grunt ) {
             vendor: [
                 '<%= build_dir %>/vendor/common/jquery.js',
                 '<%= build_dir %>/vendor/common/angular.js',
-                '<%= build_dir %>/vendor/*/*.js'
+                '<%= build_dir %>/vendor/*/*.js',
+                '!**/modernizr.js',
+                '!**/detectizr.js'
             ],
             app: [
               '<%= build_dir %>/js/**/*.js',
@@ -28,7 +30,7 @@ module.exports = function ( grunt ) {
             ]
           },
           styles: {
-            app: ['<%= build_dir %>/vendor/*/*.css', '<%= build_dir %>/css/*.css']
+            app: ['<%= build_dir %>/css/*.css']
           },
           data: {
               version: "<%= pkg.version %>",
@@ -46,11 +48,11 @@ module.exports = function ( grunt ) {
           beautify: true,
           relative: true,
           scripts: {
-            modernizr: '<%= compile_dir %>/js/modernizr.js',
+            modernizr: ['<%= compile_dir %>/js/modernizr.js', '<%= compile_dir %>/js/detectizr.js'],
             app: '<%= compile_dir %>/js/<%= pkg.name %>.js'
           },
           styles: {
-            app: '<%= compile_dir %>/css/app.css'
+            app: '<%= compile_dir %>/css/*.css'
           }
         }
       }
@@ -104,18 +106,23 @@ module.exports = function ( grunt ) {
     concat: {
       compile_js: {
         src: [
-          '<%= build_dir %>/vendor/**/*.js',
+          '<%= build_dir %>/vendor/common/jquery.js',
+          '<%= build_dir %>/vendor/common/angular.js',
+          '<%= build_dir %>/vendor/*/*.js',
           '!**/modernizr.js',
-          '<%= build_dir %>/js/**/*.js'
+          '!**/detectizr.js',
+          '<%= build_dir %>/js/app.module.js',
+          '<%= build_dir %>/js/**/*.js',
+          '<%= html2js.app.dest %>'
         ],
         dest: '<%= compile_dir %>/js/<%= pkg.name %>.js'
       },
-      compile_css: {
+      compile_modernizr: {
         src: [
-            '<%= build_dir %>/vendor/**/*.css',
-            '<%= build_dir %>/css/app.css'
+            '<%= compile_dir %>/js/modernizr.js',
+            'modernizr/detectizr.js',
         ],
-        dest: '<%= compile_dir %>/css/<%= pkg.name %>.js'
+        dest: '<%= compile_dir %>/js/modernizr.js'
       }
     },
 
@@ -323,6 +330,16 @@ module.exports = function ( grunt ) {
             expand: true
           }
         ]
+      },
+      compile_partials: {
+        files: [
+          {
+            src: [ '**' ],
+            dest: '<%= compile_dir %>/partials/',
+            cwd: 'src/partials',
+            expand: true
+          }
+       ]
       }
     },
 
@@ -390,14 +407,16 @@ module.exports = function ( grunt ) {
     grunt.registerTask('build', [
         'jshint', 'clean', 'html2js',
         //'svgstore',
-        'copy:build_assets', 'copy:build_data', 'copy:build_appjs', 'copy:build_vendor',
-        'copy:build_partials',
+        'copy:build_assets', 'copy:build_data', 'copy:build_appjs', 'copy:build_vendor', 'copy:build_partials',
         'compass:dev', 'autoprefixer:build', 'htmlbuild:build'
     ]);
 
     grunt.registerTask('compile', [
-        'copy:compile_assets', 'copy:compile_data',
-        'ngmin', 'concat', 'imagemin:dist',
-        'compass:prod', 'modernizr', 'htmlbuild:compile'
+        'copy:compile_assets', 'copy:compile_data', 'copy:compile_partials',
+        'compass:prod', 'autoprefixer:dist',
+        'modernizr',
+        'ngmin', 'concat',
+        //'imagemin:dist',
+        'htmlbuild:compile'
     ]);
 };

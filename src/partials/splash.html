@@ -5,7 +5,7 @@
             <div class="nly-icon__image"><img src="assets/nly.png" alt="No likes yet."></div>
         </div>
         <h1 class="nly-splash__headline">Discover all the photos on Instagram with&nbsp;no&nbsp;likes&nbsp;yet.</h1>
-        <div class="nly-splash__button"><a class="nly-button" ng-href="https://instagram.com/oauth/authorize/?client_id={{instagramApiData.clientId}}&amp;redirect_uri={{instagramApiData.redirectUri}}&amp;response_type=token&amp;scope={{instagramApiData.scope}}"><span ng-hide="hasAccessToken">login to </span>start browsing</a></div>
+        <div class="nly-splash__button"><a class="nly-button" capture-webapp-link ng-href="https://instagram.com/oauth/authorize/?client_id={{instagramApiData.clientId}}&amp;redirect_uri={{instagramApiData.redirectUri}}&amp;response_type=token&amp;scope={{instagramApiData.scope}}"><span ng-hide="hasAccessToken">login to </span>start browsing</a></div>
     </div>
     <div class="nly-splash__credits nly-credits">
         <p>Made by <a href="http://instagram.com/danielsumarna" target="_blank">@danielsumarna</a>, <a href="http://instagram.com/talmidy" target="_blank">@talmidy</a> and&nbsp;<a href="http://instagram.com/timhettler" target="_blank">@timhettler</a>.</p>

@@ -28,23 +28,20 @@
     <div class="nly-main" ng-class="'nly-main--'+type" infinite-scroll="getMedia()" infinite-scroll-distance="1" infinite-scroll-disabled="busy[type]">
         <div class="nly-media-container nly-media-container--world" ng-show="type === 'world'">
             <media ng-repeat="item in view.world" data="item" type="{{type}}"></media>
-            <loading type="world" size="{{view.world.length}}"></loading>
         </div>
         <div class="nly-media-container nly-media-container--friends" ng-show="type === 'friends'">
             <media ng-repeat="item in view.friends" data="item" type="{{type}}"></media>
-            <loading type="friends" size="{{view.friends.length}}"></loading>
             <p class="nly-media-container__end" ng-show="complete.friends === true">That's it for now.</p>
         </div>
         <div class="nly-media-container nly-media-container--self" ng-show="type === 'self'">
             <media ng-repeat="item in view.self" data="item" type="{{type}}"></media>
-            <loading type="self" size="{{view.self.length}}"></loading>
             <p class="nly-media-container__end" ng-show="complete.self === true">That's it for now.</p>
         </div>
         <div class="nly-media-container nly-media-container--search" ng-show="type === 'search'">
             <media ng-repeat="item in view.search" data="item" type="{{type}}"></media>
-            <loading type="search" size="{{view.search.length}}"></loading>
             <p class="nly-media-container__end" ng-show="complete.search === true">That's it for now.</p>
         </div>
+        <loading type="type" size="view[type].length" busy="busy[type] " complete="complete[type]"></loading>
     </div>
     <div class="nly-info" ng-class="{'is-hidden':!showInfo}" disable-scroll>
         <div class="nly-info__container">

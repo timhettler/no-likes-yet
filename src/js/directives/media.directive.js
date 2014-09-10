@@ -21,12 +21,12 @@ angular.module('app')
             transEndEventName = transEndEventNames[ Modernizr.prefixed('transition') ];
 
             var doLike = function () {
+                instagramService.setLike(scope.data.id);
                 element.addClass('is-liked').one(transEndEventName, function () {
                     $timeout(function () {
                         element.addClass('is-hidden');
                     }, 900);
                 });
-                // instagramService.setLike(scope.data.id);
             };
 
             element.find('.media-overlay')

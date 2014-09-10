@@ -5,7 +5,7 @@ var app = angular.module('app');
 
 /* Services */
 
-app.factory('instagramService', function ($http, $q, instagramApiData) {
+app.factory('instagramService', function ($http, $q, $log, instagramApiData) {
     var publicMethods = {},
         clientId = instagramApiData.clientId,
         accessToken = null,
@@ -16,7 +16,7 @@ app.factory('instagramService', function ($http, $q, instagramApiData) {
     var getData = function (url) {
         var deferred = $q.defer();
 
-        console.log('api request: ', url);
+        $log.debug('api request: ', url);
 
         $http.
             jsonp(url).
@@ -107,7 +107,7 @@ app.factory('instagramService', function ($http, $q, instagramApiData) {
             followingUrl = configureUrl(baseUrl + 'users/' + uid + '/follows/'),
             following = [],
             getFollowing = function (url) {
-                console.log('getting followers at %s', url);
+                $log.debug('getting followers at %s', url);
                 getData(url)
                     .then(function (result) {
                         following = following.concat(result.data);
@@ -150,7 +150,7 @@ app.factory('instagramService', function ($http, $q, instagramApiData) {
     };
 
     publicMethods.setAccessToken = function (token) {
-        console.log('access token set', token);
+        $log.debug('access token set', token);
         accessToken = token;
     };
 

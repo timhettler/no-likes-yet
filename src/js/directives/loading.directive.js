@@ -3,14 +3,15 @@ angular.module('app')
     return {
         restrict: 'E',
         replace: true,
-        scope: true,
+        scope: {
+            type: '=',
+            size: '=',
+            busy: '=',
+            complete: '='
+        },
         controller: function ($scope, $element, $attrs) {
-            $scope.type = $attrs['type'];
         },
         link: function (scope, element, attributes) {
-            attributes.$observe('size', function (newValue) {
-                scope.size = newValue;
-            });
         },
         templateUrl: 'templates/loading.tpl.html'
     };
